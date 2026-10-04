@@ -1,0 +1,131 @@
+<?php
+include_once $_SERVER['DOCUMENT_ROOT'] . '/CommonPHP/blocks/includes.php';
+?>
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <title>Date range</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+  <script type="text/javascript" src="moment.min.js"></script>
+  <script type="text/javascript" src="daterangepicker.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <style type="text/css">
+    body {
+      font: 14px sans-serif;
+      text-align: center;
+    }
+  </style>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <?php echo (navBarFromControl2()); ?>
+
+  <main class="mdl-layout__content">
+    <h4>Bokade/uthyrda dressiner</h4>
+    <!-- 
+If data comes from external sources like form filled in by anonymous users, there is a risk that it may
+ contain malicious script indented to launch cross-site scripting (XSS) attacks. Therefore, you must escape 
+ this data using the PHP htmlspecialchars() function before displaying it in the browser, so that any HTML 
+ tag it contains becomes harmless.
+
+For example, after escaping special characters the string <script>alert("XSS")</script> becomes 
+&lt;script&gt;alert("XSS")&lt;/script&gt; which is not executed by the browser.
+
+
+    -->
+
+    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 80%; height: 100px;">
+      <i class="fa fa-calendar"></i>&nbsp;
+      <span></span> <i class="fa fa-caret-down"></i>
+    </div>
+    <button class="mdl-float-button mdl-button mdl-button--icon mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" data-upgraded=",MaterialButton" style="position:absolute; bottom:130px; background-color: green;" onclick="passValLedig()" title="Lediga dressiner">
+      <i class="material-icons">pedal_bike</i>
+    </button>
+    <button class="mdl-float-button mdl-button mdl-button--icon mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" data-upgraded=",MaterialButton" style="position:absolute; bottom:90px; background-color: red;" onclick="passVal()" title="Upptagna dressiner">
+      <i class="material-icons">pedal_bike</i>
+
+    </button>
+    <button class="mdl-float-button mdl-button mdl-button--icon mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" data-upgraded=",MaterialButton" style=" position:absolute; bottom:50px; background-color: blue;" onclick="passValNation()" title="Nationer">
+      <i class="material-icons">language</i>
+
+    </button>
+    <button class="mdl-float-button mdl-button mdl-button--icon mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" data-upgraded=",MaterialButton" style="position:absolute; bottom:10px;" onclick="dressUt()" title="Hem">
+      <i class="material-icons">home</i> </button>
+    <script type="text/javascript">
+      function dressUt() {
+        window.location = "../view/welcome.php";
+      }
+      var startDatum;
+      var endDatum;
+      //https://www.daterangepicker.com/ 
+      $(function() {
+
+        var start = moment();
+        var end = moment().add(6, 'days');
+
+        function cb(start, end) {
+          startDatum = start;
+          endDatum = end;
+          $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        }
+
+        $('#reportrange').daterangepicker({
+          startDate: start,
+          endDate: end,
+          ranges: {
+            'Idag': [moment(), moment()],
+            'Imorgon': [moment().add(1, 'days'), moment().add(1, 'days')],
+            'En vecka framåt': [moment(), moment().add(6, 'days')],
+            '30 dagar framåt': [moment(), moment().add(29, 'days')],
+            'Denna månad': [moment().startOf('month'), moment().endOf('month')],
+            'Nästa månad': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
+          }
+        }, cb);
+
+        cb(start, end);
+
+      });
+
+      function passVal() {
+        console.log('draw.php?start="' + moment(startDatum).format('YYYY-MM-DD HH:mm:ss') +
+          '"&end="' + moment(endDatum).format('YYYY-MM-DD HH:mm:ss') + '"');
+        window.location.href = 'draw.php?start=' + moment(startDatum).format('YYYY-MM-DD HH:mm:ss') +
+          '&end=' + moment(endDatum).format('YYYY-MM-DD HH:mm:ss');
+
+
+        //  drawChart();
+      }
+
+      function passValLedig() {
+
+        window.location.href = 'lediga-dressiner.php?start=' + moment(startDatum).format('YYYY-MM-DD HH:mm:ss') +
+          '&end=' + moment(endDatum).format('YYYY-MM-DD HH:mm:ss');
+
+
+        //  drawChart();
+      }
+
+      function passValNation() {
+
+        window.location.href = 'draw-nation.php?start=' + moment(startDatum).format('YYYY-MM-DD HH:mm:ss') +
+          '&end=' + moment(endDatum).format('YYYY-MM-DD HH:mm:ss');
+
+
+        //  drawChart();
+      }
+    </script>
+
+
+  </main>
+
+  </div>
+
+  <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js">
+  </script>
+  </body>
+
+</html>

@@ -1,0 +1,152 @@
+<!--Att skapa en lokal HTML-applikation med en inbyggd databas 
+görs bäst genom att använda IndexedDB eller SQLite (via WebAssembly). Eftersom du vill köra allt lokalt i webbläsaren utan att konfigurera en extern server (som Node.js eller MySQL), är IndexedDB det enklaste och mest kraftfulla standardverktyget.
+Här är ett komplett, körbart exempel på en att-göra-lista (To-Do app) i en enda HTML-fil. Den sparar, läser och raderar data direkt i webbläsarens inbyggda databas.
+## 📋 Komplett källkod (index.html)
+Spara koden nedan som en .html-fil (t.ex. app.html) på din dator och dubbelklicka på den för att köra igång.
+-->
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lokal HTML-App med Databas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h1 { color: #333; }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #218838; }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: white;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .delete-btn:hover { background-color: #c82333; }
+    </style>
+</head>
+<body>
+
+    <h1>Min Lokala Databas-App</h1>
+    
+    <div class="input-group">
+        <input type="text" id="todoInput" placeholder="Skriv något att göra...">
+        <button onclick="addTodo()">Spara</button>
+    </div>
+
+    <ul id="todoList"></ul>
+
+    <script>
+        let db;
+        const dbName = "MinLokalaDB";
+        const storeName = "uppgifter";
+
+        // 1. Öppna eller skapa databasen
+        const request = indexedDB.open(dbName, 1);
+
+        request.onupgradeneeded = function(event) {
+            db = event.target.result;
+            // Skapa en objektbutik (motsvarar en tabell) med ett auto-inkrementerande ID
+            db.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
+        };
+
+        request.onsuccess = function(event) {
+            db = event.target.result;
+            renderTodos(); // Läs in data när databasen är redo
+        };
+
+        request.onerror = function(event) {
+            console.error("Fel vid öppning av databasen:", event.target.error);
+        };
+
+        // 2. Lägg till data i databasen
+        function addTodo() {
+            const input = document.getElementById("todoInput");
+            const text = input.value.trim();
+            
+            if (text === "") return;
+
+            const transaction = db.transaction([storeName], "readwrite");
+            const store = transaction.objectStore(storeName);
+            
+            const nyUppgift = { text: text, datum: new Date().toLocaleDateString() };
+            store.add(nyUppgift);
+
+            transaction.oncomplete = function() {
+                input.value = ""; // Töm inputfältet
+                renderTodos();    // Uppdatera listan på skärmen
+            };
+        }
+
+        // 3. Hämta och visa data
+        function renderTodos() {
+            const listan = document.getElementById("todoList");
+            listan.innerHTML = ""; // Töm listan innan rendering
+
+            const transaction = db.transaction([storeName], "readonly");
+            const store = transaction.objectStore(storeName);
+            const cursorRequest = store.openCursor();
+
+            cursorRequest.onsuccess = function(event) {
+                const cursor = event.target.result;
+                if (cursor) {
+                    const li = document.createElement("li");
+                    li.innerHTML = `
+                        <span>${cursor.value.text} <small style="color:#888">(${cursor.value.datum})</small></span>
+                        <button class="delete-btn" onclick="deleteTodo(${cursor.value.id})">Radera</button>
+                    `;
+                    listan.appendChild(li);
+                    cursor.continue(); // Gå till nästa rad i databasen
+                }
+            };
+        }
+
+        // 4. Ta bort data från databasen
+        function deleteTodo(id) {
+            const transaction = db.transaction([storeName], "readwrite");
+            const store = transaction.objectStore(storeName);
+            store.delete(id);
+
+            transaction.oncomplete = function() {
+                renderTodos(); // Uppdatera listan
+            };
+        }
+    </script>
+</body>
+</html>

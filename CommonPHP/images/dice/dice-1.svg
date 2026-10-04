@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 17 17"
+   class="si-glyph si-glyph-dice-1"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="dice-1.svg">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1268"
+     inkscape:window-height="698"
+     id="namedview12"
+     showgrid="false"
+     inkscape:zoom="16.07779"
+     inkscape:cx="0.70486437"
+     inkscape:cy="10.400636"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
+  <!-- Generator: Sketch 3.0.3 (7891) - http://www.bohemiancoding.com/sketch -->
+  <title
+     id="title4">1172</title>
+  <defs
+     id="defs6" />
+  <g
+     id="g8"
+     style="fill:#aa0000;fill-rule:evenodd;stroke:none;stroke-width:1"
+     transform="translate(-0.37318561,0.43538321)">
+    <path
+       d="M 14.763,0 3.178,0 C 1.998,0 1.043,0.966 1.043,2.155 l 0,11.69 c 0,1.189 0.955,2.154 2.135,2.154 l 11.585,0 c 1.181,0 2.136,-0.965 2.136,-2.154 l 0,-11.69 C 16.898,0.966 15.943,0 14.763,0 l 0,0 z M 9.017,11.155 c -1.696,0 -3.069,-1.406 -3.069,-3.14 0,-1.734 1.373,-3.14 3.069,-3.14 1.694,0 3.069,1.406 3.069,3.14 0,1.734 -1.375,3.14 -3.069,3.14 l 0,0 z"
+       class="si-glyph-fill"
+       id="path10"
+       style="fill:#aa0000"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

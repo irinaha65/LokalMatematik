@@ -1,0 +1,60 @@
+.app .container {
+	margin-top: 10px;
+	text-align: center;
+	justify-content: baseline ;
+
+}
+.app {
+	font-size: larger;
+}
+.app .container .ans {
+	text-align: center;
+}
+.app .container .ans.error {
+	border-color: #f08080;
+}
+.app .container .ans.success {
+	border-color: #90ee90;
+}
+.app .container .equals {
+	color: #c7c7c7;
+	margin: 0;
+}
+input{
+	color: black;
+	font-weight: bolder;
+	height: auto;
+	width: 200px;
+	margin-bottom: 10px;
+
+}
+input[type="radio"] {
+	width: 20px;
+	height: 20px;
+}
+
+
+
+.error {
+	color: #f08080;
+}
+.l-score {
+	color: #ebeb00;
+}
+.success {
+	color: #90ee90;
+}
+.label {
+	margin-right: 10px;
+}
+.equation{
+	overflow:auto;
+}
+.toolbar {
+	height: 60px;
+	border-bottom: 1px solid #eaeaea;
+	line-height: 60px;
+}
+.u-text-center {
+	text-align: center;
+}

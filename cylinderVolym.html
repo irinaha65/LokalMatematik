@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cylinder - Nivå 1</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; }
+    input { width: 100px; margin: 4px; }
+    section { margin-bottom: 30px; }
+    h2 { color: #007acc; }
+  </style>
+</head>
+<body>
+  <h1>Cylinder – Nivå 1</h1>
+
+  <!-- Uppgift 1 -->
+  <section>
+    <h2>1. Volym från radie och höjd</h2>
+    <label>Radie (cm): <input type="number" id="r1"></label><br>
+    <label>Höjd (cm): <input type="number" id="h1"></label><br>
+    <button onclick="beraknaVolym()">Beräkna volym</button>
+    <p id="volym-resultat"></p>
+  </section>
+
+  <!-- Uppgift 2 -->
+  <section>
+    <h2>2. Radie från volym och höjd</h2>
+    <label>Volym (cm³): <input type="number" id="v2"></label><br>
+    <label>Höjd (cm): <input type="number" id="h2"></label><br>
+    <button onclick="beraknaRadie()">Beräkna radie</button>
+    <p id="radie-resultat"></p>
+  </section>
+
+  <!-- Uppgift 3 -->
+  <section>
+    <h2>3. Mantelyta</h2>
+    <label>Radie (cm): <input type="number" id="r3"></label><br>
+    <label>Höjd (cm): <input type="number" id="h3"></label><br>
+    <button onclick="beraknaMantelyta()">Beräkna mantelyta</button>
+    <p id="mantel-resultat"></p>
+  </section>
+
+  <script>
+    function beraknaVolym() {
+      const r = parseFloat(document.getElementById("r1").value);
+      const h = parseFloat(document.getElementById("h1").value);
+      if (r > 0 && h > 0) {
+        const volym = Math.PI * r * r * h;
+        document.getElementById("volym-resultat").innerText =
+          `Volymen är ${volym.toFixed(2)} cm³`;
+      } else {
+        document.getElementById("volym-resultat").innerText = "Ange positiva värden.";
+      }
+    }
+
+    function beraknaRadie() {
+      const V = parseFloat(document.getElementById("v2").value);
+      const h = parseFloat(document.getElementById("h2").value);
+      if (V > 0 && h > 0) {
+        const r = Math.sqrt(V / (Math.PI * h));
+        document.getElementById("radie-resultat").innerText =
+          `Radien är ${r.toFixed(2)} cm`;
+      } else {
+        document.getElementById("radie-resultat").innerText = "Ange positiva värden.";
+      }
+    }
+
+    function beraknaMantelyta() {
+      const r = parseFloat(document.getElementById("r3").value);
+      const h = parseFloat(document.getElementById("h3").value);
+      if (r > 0 && h > 0) {
+        const A = 2 * Math.PI * r * h;
+        document.getElementById("mantel-resultat").innerText =
+          `Mantelytan är ${A.toFixed(2)} cm²`;
+      } else {
+        document.getElementById("mantel-resultat").innerText = "Ange positiva värden.";
+      }
+    }
+  </script>
+</body>
+</html>
