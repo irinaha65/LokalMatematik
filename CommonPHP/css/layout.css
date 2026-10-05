@@ -83,7 +83,7 @@ small {
 
 canvas {
     border: 2px solid #333;
-    background-color: #f0f0f0;
+  
     cursor: crosshair;
 }
 
@@ -12868,6 +12868,8 @@ footer p {
     /* Gör animationen mjuk */
     transform: translateX(-100%);
     /* Gömmer panelen till vänster */
+    display:flex;
+    flex-direction: column;
 }
 
 /* Stil för länkarna i panelen */

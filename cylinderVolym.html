@@ -10,6 +10,7 @@
  
         <link rel="stylesheet" href="./CommonPHP/css/layout.css" >
 
+<script src="./CommonPHP/js/jquery-4.0.0.min.js"   ></script>
 </head>
 <body>
    <div id="navigation">
@@ -20,26 +21,7 @@
                             <path d="M3 18h18v-2H3zm0-5h18v-2H3zm0-7v2h18V6z"></path>
                         </svg></div>
                     <ul class="nav navbar-nav navbar-right " id="sidebar">
-                        <li id="closeBtn" style="text-align: end; margin-left: 80%; ">
-      <svg preserveAspectRatio="xMidYMid meet" class="symbolIcon" viewBox="-76.8 -76.8 665.6 665.6" fill="#000"
-          style="display: inline-block; box-sizing: content-box; background: rgb(255, 255, 255); width: 30px; height: 30px; ">
-          <g
-              style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5">
-              <path d="M15.216 496.784 496.784 15.216m-481.568 0 481.568 481.568"
-                  style="fill:none;stroke:#000;stroke-width:30px"></path>
-          </g>
-      </svg></li>
-  <br> <li class="signupButton"><a
-                                href="index.html"
-                                data-discover="true"><span class="name">Hem</span></a></li>
-                                    <li class="signupButton">
-                                        <a  href="./cylinderVolym.html"e"><span class="name"> Volym av en cylinder</span></a></li>
-                                 <li class="signupButton"><a
-                                href="./stitches/more.html"
-                                data-discover="true"><span class="name">Avancerade maskar</span></a></li>
-  <li class="signupButton"><a
-                                href="./stitches/ritYta.html"
-                                data-discover="true"><span class="name">Rita</span></a></li>
+                     
 
                     </ul>
                     <h1 style="user-select: none;"><a
@@ -49,70 +31,419 @@
                 </div>
     
   <h1>Cylinder – Nivå 1</h1>
-
-  <!-- Uppgift 1 -->
+<table>
+  <tr><td>
+     <!-- Uppgift 1 -->
   <section>
     <h2>1. Volym från radie och höjd</h2>
-    <label>Radie (cm): <input type="number" id="r1"></label><br>
-    <label>Höjd (cm): <input type="number" id="h1"></label><br>
+    <label>Radie (cm): <input type="number" id="r1"  step="0.01" min="0.1" placeholder="0.00"></label><br>
+    <label>Höjd (cm): <input type="number" id="h1"  step="0.01" min="0.1" placeholder="0.00"></label><br>
+     <button onclick="ritaCylinder1()">Rita cylinder</button>
     <button onclick="beraknaVolym()">Beräkna volym</button>
+      <button id="saveBtn1" type="button">Spara bild</button>
     <p id="volym-resultat"></p>
   </section>
-
+  </td>
+  <td><canvas id="canvas1" width="250" height="250"></canvas></td>
+</tr>
+  <tr>
+    <td> 
   <!-- Uppgift 2 -->
   <section>
     <h2>2. Radie från volym och höjd</h2>
-    <label>Volym (cm³): <input type="number" id="v2"></label><br>
-    <label>Höjd (cm): <input type="number" id="h2"></label><br>
+    <label>Volym (cm³): <input type="number" id="v2"  step="0.01" min="0.1" placeholder="0.00"></label><br>
+    <label>Höjd (cm): <input type="number" id="h2"  step="0.01" min="0.1" placeholder="0.00"></label><br>
+     <button onclick="ritaCylinder2()">Rita cylinder</button>
     <button onclick="beraknaRadie()">Beräkna radie</button>
+      <button id="saveBtn2" type="button">Spara bild</button>
     <p id="radie-resultat"></p>
-  </section>
-
+  </section> </td>
+   <td><canvas id="canvas2" width="250" height="250"></canvas></td>
+  </tr>
+  <tr>
+    <td>
   <!-- Uppgift 3 -->
   <section>
     <h2>3. Mantelyta</h2>
-    <label>Radie (cm): <input type="number" id="r3"></label><br>
-    <label>Höjd (cm): <input type="number" id="h3"></label><br>
-    <button onclick="beraknaMantelyta()">Beräkna mantelyta</button>
-    <p id="mantel-resultat"></p>
+    <label>Radie (cm): <input type="number" id="r3"  step="0.01" min="0.1" placeholder="0.00"></label><br>
+    <label>Höjd (cm): <input type="number" id="h3"  step="0.01" min="0.1" placeholder="0.00 "></label><br>
+   
+     <button onclick="ritaMantel()">Rita cylinder</button> 
+     <button onclick="beraknaMantelyta()">Beräkna mantelyta</button>
+      <button id="saveBtn3" type="button">Spara bild</button>
+    <p id="mantel-resultat" ></p>
   </section>
 
+    </td>
+     <td><canvas id="canvas3" width="350" height="250"></canvas></td>
+  </tr>
+
+</table>
+ 
+
+
+
+
   <script>
+    $(document).ready(function() {
+    
+    $("#saveBtn1").on("click", function() {
+        // 1. Hämta canvas-elementet (med index 0 för att få DOM-elementet)
+        var canvas = $("#canvas1")[0];
+        
+        // 2. Gör om canvasens innehåll till en PNG-bild (Data URL)
+        var imageURI = canvas.toDataURL("image/png");
+        
+        // 3. Skapa en dold nerladdningslänk i bakgrunden
+        var downloadLink = document.createElement("a");
+        downloadLink.download = "cylinder_ritning.png"; // Namnet på filen som sparas
+        downloadLink.href = imageURI;
+        
+        // 4. Trigga klicket på länken för att starta nerladdningen
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    });
+$("#saveBtn2").on("click", function() {
+        // 1. Hämta canvas-elementet (med index 0 för att få DOM-elementet)
+        var canvas = $("#canvas2")[0];
+        
+        // 2. Gör om canvasens innehåll till en PNG-bild (Data URL)
+        var imageURI = canvas.toDataURL("image/png");
+        
+        // 3. Skapa en dold nerladdningslänk i bakgrunden
+        var downloadLink = document.createElement("a");
+        downloadLink.download = "cylinder_ritning.png"; // Namnet på filen som sparas
+        downloadLink.href = imageURI;
+        
+        // 4. Trigga klicket på länken för att starta nerladdningen
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    });
+    $("#saveBtn3").on("click", function() {
+        // 1. Hämta canvas-elementet (med index 0 för att få DOM-elementet)
+        var canvas = $("#canvas3")[0];
+        
+        // 2. Gör om canvasens innehåll till en PNG-bild (Data URL)
+        var imageURI = canvas.toDataURL("image/png");
+        
+        // 3. Skapa en dold nerladdningslänk i bakgrunden
+        var downloadLink = document.createElement("a");
+        downloadLink.download = "cylinder_mantel.png"; // Namnet på filen som sparas
+        downloadLink.href = imageURI;
+        
+        // 4. Trigga klicket på länken för att starta nerladdningen
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }); 
+});
     function beraknaVolym() {
-      const r = parseFloat(document.getElementById("r1").value);
-      const h = parseFloat(document.getElementById("h1").value);
-      if (r > 0 && h > 0) {
+      const r = parseFloat(parseFloat($("#r1").val()));
+      const h = parseFloat(parseFloat($("#h1").val()));;
+     
         const volym = Math.PI * r * r * h;
-        document.getElementById("volym-resultat").innerText =
-          `Volymen är ${volym.toFixed(2)} cm³`;
-      } else {
-        document.getElementById("volym-resultat").innerText = "Ange positiva värden.";
-      }
+        $("#volym-resultat").get(0).innerText =
+          `Volymen är ${volym.toFixed(2)} cm³`;  
     }
+function getRadiusFromVolym(V, h) {
+    return Math.sqrt(V / (Math.PI * h));
+}
 
     function beraknaRadie() {
-      const V = parseFloat(document.getElementById("v2").value);
-      const h = parseFloat(document.getElementById("h2").value);
-      if (V > 0 && h > 0) {
-        const r = Math.sqrt(V / (Math.PI * h));
-        document.getElementById("radie-resultat").innerText =
+      const V = parseFloat(parseFloat($("#v2").val()));
+      const h = parseFloat(parseFloat($("#h2").val()));
+   
+        const r = getRadiusFromVolym(V, h);
+        $("#radie-resultat").get(0).innerText =
           `Radien är ${r.toFixed(2)} cm`;
-      } else {
-        document.getElementById("radie-resultat").innerText = "Ange positiva värden.";
-      }
+    
     }
 
     function beraknaMantelyta() {
-      const r = parseFloat(document.getElementById("r3").value);
-      const h = parseFloat(document.getElementById("h3").value);
-      if (r > 0 && h > 0) {
+      const r = parseFloat(parseFloat($("#r3").val()));
+      const h = parseFloat(parseFloat($("#h3").val()));
+  console.log(`Radie: ${r}, Höjd: ${h}`);
         const A = 2 * Math.PI * r * h;
-        document.getElementById("mantel-resultat").innerText =
+        $("#mantel-resultat").get(0).innerText =
           `Mantelytan är ${A.toFixed(2)} cm²`;
-      } else {
-        document.getElementById("mantel-resultat").innerText = "Ange positiva värden.";
-      }
+    
     }
+
+
+var ctx, canvas;
+function getCilnder(ctx, radius, height) {
+  // Lägg till detta i början av din getCilnder-funktion:
+ctx.fillStyle = "#ffffff"; 
+ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    // 1. Tvinga flytt till toppen av canvasen så att höga cylindrar får plats
+    const centerX = 90; 
+    const topY = 40; 
+    const ellipseYRadius = 25; // Ellipsens platttextur (vertikala radie)
+
+    // 2. BERÄKNA RÄTTA PROPORTIONER (SKALNING)
+    // Vi vill att ritningen ska anpassa sig efter de värden du skriver in.
+    // Vi sätter en maxbredd på skärmen (t.ex. 160px totalt, så radie max 80)
+    // Och en maxhöjd på skärmen (t.ex. 180px) så den inte klipper i botten.
+    const maxPixelRadius = 80;
+    const maxPixelHeight = 160;
+
+    // Räkna ut skalfaktorer för både bredd och höjd
+    const scaleX = maxPixelRadius / radius;
+    const scaleY = maxPixelHeight / height;
+
+    // Använd den striktaste skalan för att behålla det exakta förhållandet!
+    const scale = Math.min(scaleX, scaleY);
+
+    // De faktiska pixelmåtten som bevarar förhållandet radie/höjd perfekt:
+    const scaledRadius = radius * scale;
+    const scaledHeight = height * scale;
+console.log(`Skalning: scaleX=${scaleX.toFixed(2)}, scaleY=${scaleY.toFixed(2)}, scaledRadius=${scaledRadius.toFixed(2)}, scaledHeight=${scaledHeight.toFixed(2)}`);  
+    // Rensa eventuella sträckade linjer från tidigare ritningar
+    ctx.setLineDash([]);
+
+    // --- RITA CYLINDERN ---
+
+    // Övre ellips (toppen)
+    ctx.beginPath();
+     ctx.lineWidth = 3; // Sätter linjetjockleken för cylindern
+    ctx.ellipse(centerX, topY, scaledRadius, ellipseYRadius, 0, 0, 2 * Math.PI);
+    ctx.strokeStyle = 'blue';
+    ctx.stroke();
+       // NEDERSTA ELLIPSEN - UPPDELAD I TVÅ HALVOR
+    const bottomY = topY + scaledHeight;
+  // A) Främre halvan (Botten/Nedre delen) -> HELDRAGEN
+    ctx.beginPath();
+    ctx.ellipse(centerX, bottomY, scaledRadius, ellipseYRadius, 0, 0, Math.PI); // Från 0 till PI
+    ctx.stroke();
+
+    // B) Bakre halvan (Toppen/Övre delen) -> STRECKAD
+    ctx.beginPath();
+    ctx.setLineDash([6, 4]); // Sätter sträckat mönster
+    ctx.ellipse(centerX, bottomY, scaledRadius, ellipseYRadius, 0, Math.PI, 2 * Math.PI); // Från PI till 2*PI
+    ctx.stroke();
+    
+    // Nollställ sträckningen direkt så sidorna blir heldragna
+    ctx.setLineDash([]);
+
+    // Vänstra vertikala sidan
+    ctx.beginPath();
+    ctx.moveTo(centerX - scaledRadius, topY);
+    ctx.lineTo(centerX - scaledRadius, topY + scaledHeight);
+    ctx.stroke();
+
+    // Högra vertikala sidan
+    ctx.beginPath();
+    ctx.moveTo(centerX + scaledRadius, topY);
+    ctx.lineTo(centerX + scaledRadius, topY + scaledHeight);
+    ctx.stroke();
+
+    // --- RITA RADIE (r) INUTI TOPPEN ---
+    // Går från centrum ut till högerkanten av toppellipsen
+    ctx.beginPath();
+    ctx.moveTo(centerX, topY);
+    ctx.lineTo(centerX + scaledRadius, topY);
+    ctx.strokeStyle = 'purple';
+    ctx.stroke();
+   
+    ctx.font = "bold 16px Arial";
+    ctx.fillStyle = 'purple';
+    ctx.fillText(radius, centerX + (scaledRadius / 2), topY - 8);
+
+    // --- RITA HÖJD (h) PÅ HÖGER SIDA ---
+    // Drar en linje precis längs med den högra kanten
+    ctx.beginPath();
+    ctx.moveTo(centerX + scaledRadius, topY);
+    ctx.lineTo(centerX + scaledRadius, topY + scaledHeight);
+    ctx.strokeStyle = 'green';
+    ctx.stroke();
+    
+    ctx.fillStyle = 'black';
+    // Placerar bokstaven h till höger om linjen, centrerat i höjdled
+    ctx.fillText(height, centerX + scaledRadius + 8, topY + (scaledHeight / 2) + 5);
+}
+
+
+
+ function ritaCylinder1() {
+const radius = parseFloat($("#r1").val());
+const height = parseFloat($("#h1").val());
+let ctx = $("#canvas1").get(0) .getContext("2d");
+               
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+ console.log(`Canvas storlek: ${ctx.canvas.width}x${ctx.canvas.height}, 
+ Radie: ${radius}, Höjd: ${height}`); 
+ getCilnder( ctx, radius.toFixed(2), height.toFixed(2));
+            }
+function ritaCylinder2() {
+ const V = parseFloat(parseFloat($("#v2").val()));
+      const h = parseFloat(parseFloat($("#h2").val()));
+  
+        const r = getRadiusFromVolym(V, h);
+let ctx = $("#canvas2").get(0) .getContext("2d");
+               
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+ getCilnder( ctx, r.toFixed(2), h.toFixed(2));
+            }
+function ritaMantel() {
+  const radius = parseFloat($("#r3").val());
+  const height = parseFloat($("#h3").val());
+  let ctx = $("#canvas3").get(0) .getContext("2d");
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+   getCilnderMantel(ctx, radius, height);
+}
+function getCilnderMantel(ctx, radius, height) {
+  // Lägg till detta i början av din getCilnder-funktion:
+ctx.fillStyle = "#ffffff"; 
+ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+ // 1. Tvinga canvasens interna rityta att matcha dess faktiska storlek på skärmen
+    const rect = ctx.canvas.getBoundingClientRect();
+    if (ctx.canvas.width !== rect.width || ctx.canvas.height !== rect.height) {
+        ctx.canvas.width = rect.width;
+        ctx.canvas.height = rect.height;
+    }
+
+    const canvasWidth = ctx.canvas.width;
+    const canvasHeight = ctx.canvas.height;
+
+    // 2. Fasta inställningar för placering och marginaler
+    const padding = 40; 
+    const ellipseYRadius = 20; 
+    const gapBetweenFigures = 40; // Avståndet mellan cylindern och den utvikta ytan
+    const centerX = padding + 40; // Placerar cylindern stabilt till vänster
+    const topY = 40; 
+
+    // 3. BERÄKNA DYNAMISK SKALA UTIFRÅN BÅDE BREDD OCH HÖJD
+    // Det totala utrymmet i bredd som ritningen kräver i teorin:
+    // Cylinderns bredd (2 * radius) + mellanrummet + mantelytans bredd (2 * Math.PI * radius)
+    const theoreticalTotalWidth = (radius * 2) + gapBetweenFigures + (2 * Math.PI * radius);
+    const maxAvailableWidth = canvasWidth - (padding * 2);
+    const maxAvailableHeight = canvasHeight - (padding * 2) - (ellipseYRadius * 2);
+
+    // Räkna ut skalfaktorer för att förhindra att det sticker ut
+    const scaleX = maxAvailableWidth / theoreticalTotalWidth;
+    const scaleY = maxAvailableHeight / height;
+    
+    // Använd den striktaste skalan så att allt garanterat får plats på canvasen
+    const scale = Math.min(scaleX, scaleY);
+
+    // Skala om alla dina mått
+    const scaledRadius = radius * scale;
+    const scaledHeight = height * scale;
+    const bottomY = topY + scaledHeight;
+
+    ctx.setLineDash([]);
+    ctx.font = "bold 14px Arial";
+
+    // ==========================================
+    // 🎨 1. FÄRGLÄGG MANTEL OCH BOTTEN (Orange)
+    // ==========================================
+    ctx.fillStyle = 'rgba(255, 87, 34, 0.1)'; 
+
+    // Färga kroppen (rektangeln)
+    ctx.fillRect(centerX - scaledRadius, topY, scaledRadius * 2, scaledHeight);
+
+    // Färga hela bottenellipsen
+    ctx.beginPath();
+    ctx.ellipse(centerX, bottomY, scaledRadius, ellipseYRadius, 0, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // ==========================================
+    // ⚪ 2. TÄCK ÖVER TOPPEN MED VITT
+    // ==========================================
+    ctx.fillStyle = '#ffffff'; 
+    ctx.beginPath();
+    ctx.ellipse(centerX, topY, scaledRadius, ellipseYRadius, 0, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // ==========================================
+    // 🔵 3. RITA CYLINDERNS KONTURER (Blå)
+    // ==========================================
+    ctx.lineWidth = 3; 
+    ctx.strokeStyle = 'blue';
+
+    // ÖVERSTA ELLIPSEN (Helt tom inuti)
+    ctx.beginPath();
+    ctx.ellipse(centerX, topY, scaledRadius, ellipseYRadius, 0, 0, 2 * Math.PI);
+    ctx.stroke();
+
+    // NEDERSTA ELLIPSEN - UPPDELAD I TVÅ HALVOR
+    // A) Främre halvan -> HELDRAGEN
+    ctx.beginPath();
+    ctx.ellipse(centerX, bottomY, scaledRadius, ellipseYRadius, 0, 0, Math.PI);
+    ctx.stroke();
+
+    // B) Bakre halvan -> STRECKAD
+    ctx.beginPath();
+    ctx.setLineDash([8, 4]); // Ger ett snyggt och stabilt sträckat mönster
+    ctx.ellipse(centerX, bottomY, scaledRadius, ellipseYRadius, 0, Math.PI, 2 * Math.PI);
+    ctx.stroke();
+    
+    ctx.setLineDash([]); // Nollställ sträckning
+
+    // Vänstra och högra lodräta sidorna
+    ctx.beginPath();
+    ctx.moveTo(centerX - scaledRadius, topY);
+    ctx.lineTo(centerX - scaledRadius, bottomY);
+    ctx.moveTo(centerX + scaledRadius, topY);
+    ctx.lineTo(centerX + scaledRadius, bottomY);
+    ctx.stroke();
+
+    // Radie (r) linje i topp-ellipsen
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(centerX, topY);
+    ctx.lineTo(centerX + scaledRadius, topY);
+    ctx.strokeStyle = 'purple';
+    ctx.stroke();
+    
+    ctx.fillStyle = 'purple';
+    ctx.fillText("r", centerX + (scaledRadius / 2) - 4, topY - 8);
+
+    // ==========================================
+    // 📐 4. RITA UTVIKT MANTELYTA (Orange rektangel)
+    // ==========================================
+    const mantelWidth = 2 * Math.PI * scaledRadius;
+    const mantelX = centerX + scaledRadius + gapBetweenFigures; // Dynamisk startpunkt efter cylindern
+
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#ff5722'; 
+    
+    ctx.beginPath();
+    ctx.rect(mantelX, topY, mantelWidth, scaledHeight);
+    ctx.stroke();
+
+    ctx.fillStyle = 'rgba(255, 87, 34, 0.1)';
+    ctx.fillRect(mantelX, topY, mantelWidth, scaledHeight);
+
+    // ==========================================
+    // 🏷️ TEXTER OCH FORMATERING
+    // ==========================================
+    ctx.fillStyle = 'black';
+    
+    // Höjd (h) linje ritas i grönt
+    ctx.beginPath();
+    ctx.moveTo(mantelX - 15, topY);
+    ctx.lineTo(mantelX - 15, bottomY);
+    ctx.strokeStyle = 'green';
+    ctx.stroke();
+    ctx.fillStyle = 'green';
+    ctx.fillText("h", mantelX - 30, topY + (scaledHeight / 2) + 5);
+
+    // Text under mantelytan: 2·π·r
+    ctx.fillStyle = '#ff5722';
+    ctx.fillText("2·π·r", mantelX + (mantelWidth / 2) - 15, bottomY + 20);
+    
+    // Rubrik ovanför mantelytan
+    ctx.font = "bold 12px Arial";
+    ctx.fillText("Utvikt mantelyta", mantelX, topY - 10);
+}
+
+
+
+
   </script>
   <footer class="footer">
   <p>&copy; 2025 Irina Hagman </p>
