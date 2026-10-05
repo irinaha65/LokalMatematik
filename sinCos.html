@@ -2,13 +2,14 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8" />
-  <title>Cylinder - Nivå 1</title>
-          <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Trigonometri</title>
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport"
         content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <meta name="HandheldFriendly" content="true">
- 
-        <link rel="stylesheet" href="./CommonPHP/css/layout.css" >
+
+  
+    <link rel="stylesheet" href="./CommonPHP/css/layout.css" >
 
 </head>
 <body>
@@ -42,82 +43,19 @@
                                 data-discover="true"><span class="name">Rita</span></a></li>
 
                     </ul>
-                    <h1 style="user-select: none;"><a
+                       <h1 style="user-select: none;"><a
                                 href="index.html"
                                 data-discover="true"><span class="name">Hem</span></a>
                                    </h1>
                 </div>
-    
-  <h1>Cylinder – Nivå 1</h1>
+  <h1>Sinus och cosinus</h1>
 
-  <!-- Uppgift 1 -->
-  <section>
-    <h2>1. Volym från radie och höjd</h2>
-    <label>Radie (cm): <input type="number" id="r1"></label><br>
-    <label>Höjd (cm): <input type="number" id="h1"></label><br>
-    <button onclick="beraknaVolym()">Beräkna volym</button>
-    <p id="volym-resultat"></p>
-  </section>
 
-  <!-- Uppgift 2 -->
-  <section>
-    <h2>2. Radie från volym och höjd</h2>
-    <label>Volym (cm³): <input type="number" id="v2"></label><br>
-    <label>Höjd (cm): <input type="number" id="h2"></label><br>
-    <button onclick="beraknaRadie()">Beräkna radie</button>
-    <p id="radie-resultat"></p>
-  </section>
-
-  <!-- Uppgift 3 -->
-  <section>
-    <h2>3. Mantelyta</h2>
-    <label>Radie (cm): <input type="number" id="r3"></label><br>
-    <label>Höjd (cm): <input type="number" id="h3"></label><br>
-    <button onclick="beraknaMantelyta()">Beräkna mantelyta</button>
-    <p id="mantel-resultat"></p>
-  </section>
-
-  <script>
-    function beraknaVolym() {
-      const r = parseFloat(document.getElementById("r1").value);
-      const h = parseFloat(document.getElementById("h1").value);
-      if (r > 0 && h > 0) {
-        const volym = Math.PI * r * r * h;
-        document.getElementById("volym-resultat").innerText =
-          `Volymen är ${volym.toFixed(2)} cm³`;
-      } else {
-        document.getElementById("volym-resultat").innerText = "Ange positiva värden.";
-      }
-    }
-
-    function beraknaRadie() {
-      const V = parseFloat(document.getElementById("v2").value);
-      const h = parseFloat(document.getElementById("h2").value);
-      if (V > 0 && h > 0) {
-        const r = Math.sqrt(V / (Math.PI * h));
-        document.getElementById("radie-resultat").innerText =
-          `Radien är ${r.toFixed(2)} cm`;
-      } else {
-        document.getElementById("radie-resultat").innerText = "Ange positiva värden.";
-      }
-    }
-
-    function beraknaMantelyta() {
-      const r = parseFloat(document.getElementById("r3").value);
-      const h = parseFloat(document.getElementById("h3").value);
-      if (r > 0 && h > 0) {
-        const A = 2 * Math.PI * r * h;
-        document.getElementById("mantel-resultat").innerText =
-          `Mantelytan är ${A.toFixed(2)} cm²`;
-      } else {
-        document.getElementById("mantel-resultat").innerText = "Ange positiva värden.";
-      }
-    }
-  </script>
   <footer class="footer">
   <p>&copy; 2025 Irina Hagman </p>
 </footer>
 
        <script src="./CommonPHP/js/menu.js" ></script>
+       <script src="./CommonPHP/js/math/sinCos.js" ></script>
 </body>
 </html>
