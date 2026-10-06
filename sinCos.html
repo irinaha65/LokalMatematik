@@ -62,10 +62,10 @@
   -->
   <section>
     <h2>1. Beräkna sidans längd</h2>
-    <label>Sida AB (cm): <input type="number" id="a1"  step="0.01" min="2" placeholder="0.00"></label><br>
+ <!--   <label>Sida AB (cm): <input type="number" id="a1"  step="0.01" min="2" placeholder="0.00"></label><br>
     <label>Sida AC (cm): <input type="number" id="b1"  step="0.01" min="2" placeholder="0.00"></label><br>
      <label>Vinkel A (°): <input type="number" id="angle1"  step="0.01" min="0.1" placeholder="0.00"></label><br>
-     <button onclick="visaText1()">Visa text</button>
+   -->  <button onclick="visaText1()">Visa text</button>
      <button onclick="drawTriangle1()">Rita triangel</button>
     <button onclick="beraknaSida1()">Beräkna sidlängd</button>
       <button id="saveBtn1" type="button">Spara bild</button>
@@ -180,7 +180,7 @@ $("#saveBtn2").on("click", function() {
     }); 
 });
  
- 
+ const angles = [30, 45, 60, 105, 135, 150, 210, 225, 240, 300, 315, 330]
 var visibles = {}
 
 var polygon = new Object();
@@ -194,10 +194,16 @@ polygon.lengths = [];
 function visaText1(){
    // === Parametrar ===
 
-    const a = $("[id='a1']").val();     // Sida AB
+   /* const a = $("[id='a1']").val();     // Sida AB
     const b = $("[id='b1']").val();     // Sida AC
-    const angleA_deg = $("[id='angleA1']").val(); // Vinkel mellan dem (∠A i grader)
-    getPolygon(a, b, angleA_deg);
+    const angleA_deg = $("[id='angleA1']").val(); // Vinkel mellan dem (∠A i grader)*/
+     // === Parametrar ===
+    const a = 100;     // Sida AB
+    const b = 150;     // Sida AC
+    const angleC_deg = 60; // Vinkel mellan dem (∠A i grader)
+     visibles = { angleA: false, angleB: false, angleC: true, sidea: true, lengtha: true, sideb: true, lengthb: true, sidec: false }
+                
+    getPolygon(a, b, angleC_deg);
     $("#text1").html('I en triangel ABC är ∠C = ' + polygon.angles[0] +
                     '°, sidor a = ' + polygon.lengths[0] + ' cm och b = '
                     + polygon.lengths[1] + ' cm. Beräkna längden på sida c. Svara i cm');
@@ -283,12 +289,13 @@ function drawTriangle1() {
  // Lägg till detta i början av din getCilnder-funktion:
 ctx.fillStyle = "#ffffff"; 
 ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+getPolygon();
     drawTriangleWithTwoSidesAndAngleBetween(polygon)
 
 }
 
 
-function getPolygon(a, b, angleA_deg) {
+function getPolygon(a = 150, b = 100, angleA_deg = 60) {
 
 
     // === Parametrar ==

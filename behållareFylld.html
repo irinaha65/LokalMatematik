@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+    <title>Matematik 1 – Vattenbehållaren</title>
+          <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="HandheldFriendly" content="true">
+ 
+        <link rel="stylesheet" href="./CommonPHP/css/layout.css" >
+
+<script src="./CommonPHP/js/jquery-4.0.0.min.js"   ></script>
+</head>
+<body>
+   <div id="navigation">
+                    <div id="openBtn" class="menuButton"><svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                            viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg"
+                            style="vertical-align: middle;">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path d="M3 18h18v-2H3zm0-5h18v-2H3zm0-7v2h18V6z"></path>
+                        </svg></div>
+                    <ul class="nav navbar-nav navbar-right " id="sidebar">
+                        
+                    </ul>
+                    <h1 style="user-select: none;"><a
+                                href="index.html"
+                                data-discover="true"><span class="name">Hem</span></a>
+                                   </h1>
+                </div>
+    
+ 
+
+  
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f6f8;
+            margin: 0;
+            padding: 20px;
+            color: #222;
+            
+        }
+
+        .container {
+            
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            margin-top: 60px;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .layout {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .canvas-container {
+            flex: 1;
+            min-width: 400px;
+            text-align: center;
+        }
+
+        canvas {
+            background: #eef4f7;
+            border: 1px solid #bbb;
+            border-radius: 10px;
+            max-width: 100%;
+        }
+
+        .controls {
+            flex: 1;
+            min-width: 320px;
+        }
+
+        .box {
+            background: #f7f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 100px;
+            padding: 7px;
+            font-size: 16px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .correct {
+            color: green;
+        }
+
+        .wrong {
+            color: darkred;
+        }
+
+        .question {
+            background: #eef5ff;
+            border-left: 5px solid #4285f4;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .answer {
+            margin-top: 8px;
+        }
+
+        .small {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>💧 Matematik 1 – Vattenbehållaren</h1>
+
+    <p>
+        En familj har en cylindrisk vattenbehållare som används
+        för att samla regnvatten.
+    </p>
+
+    <div class="layout">
+
+        <!-- CANVAS -->
+        <section class="canvas-container">
+
+            <canvas id="waterCanvas"
+                    width="500"
+                    height="400">
+            </canvas>
+
+            <p>
+                <strong>Vattennivå:</strong>
+                <span id="levelText">65</span> %
+            </p>
+
+            <input
+                type="range"
+                id="levelSlider"
+                min="0"
+                max="100"
+                value="65">
+
+        </section>
+
+
+        <!-- KONTROLLER -->
+        <section class="controls">
+
+            <div class="box">
+
+                <h2>Behållaren</h2>
+
+          <!--      <p>
+                    Diameter:
+                    <strong>1,2 m</strong>
+                </p>
+
+                <p>
+                    Höjd:
+                    <strong>1,5 m</strong>
+                </p>
+
+                <p>
+                    Radie:
+                    <strong>0,6 m</strong>
+                </p>-->
+  
+   
+    <label>Radie (m): <input type="number" id="r1"  step="0.01" min="0.1" placeholder="0.00"></label><br>
+    <label>Höjd (m): <input type="number" id="h1"  step="0.01" min="0.1" placeholder="0.00"></label><br>
+    <button onclick=" ritaCylinder1()">Rita bilden</button>
+
+                <p>
+                    Formel:
+                </p>
+
+                <p>
+                    V = π · r² · h
+                </p>
+ <button id="saveBtn1" type="button">Spara bild</button>
+                <!--div class="result">
+                    Total volym:
+                    <span id="totalVolume"></span> liter-->
+            </div>
+
+  </section>
+
+            <!-- UPPGIFT 1 -->
+            <section class="question">
+
+                <h2>1. Hur mycket vatten får plats?</h2>
+   <!--button onclick="visaText1()">Visa text</button-->
+   
+ 
+  
+                <p>
+                    Beräkna hur många liter vatten som får plats
+                    när behållaren är helt full.
+                </p>
+
+                <label>
+                    Ditt svar:
+                    <input
+                        type="number"
+                        id="answer1">
+                    liter
+                </label>
+
+                <button onclick="checkAnswer1()">
+                    Kontrollera
+                </button>
+
+                <div id="result1" class="answer"></div>
+  <button onclick="visaVolym()">Visa svaret</button>
+     
+       
+    <p id="volym-resultat" ></p>
+            </section >
+
+
+            <!-- UPPGIFT 2 -->
+            <section class="question">
+
+                <h2>2. Hur mycket vatten finns kvar?</h2>
+
+                <p>
+                    Behållaren är fylld till
+                    <strong id="fylld"></strong>.
+                </p>
+
+                <p>
+                    Hur många liter vatten finns i behållaren?
+                </p>
+
+                <label>
+                    Ditt svar:
+                    <input
+                        type="number"
+                        id="answer2">
+                    liter
+                </label>
+
+                <button onclick="checkAnswer2()">
+                    Kontrollera
+                </button>
+    <div id="result1" class="answer"></div>
+  <button onclick="visaResult2()">Visa svaret</button>
+     
+       
+   
+                <p id="result2" class="answer"></p>
+
+            </section>
+
+
+            <!-- UPPGIFT 3 -->
+            <section class="question">
+
+                <h2>3. Hur länge räcker vattnet?</h2>
+
+                <p>
+                    Familjen använder
+                    <strong>45 liter per dag</strong>.
+                </p>
+
+                <p>
+                    Hur många hela dagar kan de vattna?
+                </p>
+
+                <label>
+                    Ditt svar:
+                    <input
+                        type="number"
+                        id="answer3">
+                    dagar
+                </label>
+
+                <button onclick="checkAnswer3()">
+                    Kontrollera
+                </button>
+<button onclick="visaResult3()">Visa svaret</button>
+     
+       
+                <p id="result3" class="answer"></p>
+
+            </section>
+
+
+            <!-- REGN -->
+            <section class="question">
+
+                <h2>4. Det börjar regna 🌧️</h2>
+
+                <p>
+                    Det regnar och behållaren får in
+                    <strong>180 liter</strong>.
+                </p>
+
+                <p>
+                    Hur många procent är behållaren fylld
+                    efter regnet?
+                </p>
+
+                <label>
+                    Ditt svar:
+                    <input
+                        type="number"
+                        id="answer4">
+                    %
+                </label>
+
+                <button onclick="checkAnswer4()">
+                    Kontrollera
+                </button>
+<button onclick="visaResult4()">Visa svaret</button>
+                <div id="result4" class="answer"></div>
+
+            </section>
+
+
+            <!-- UTMANING -->
+            <section class="question">
+
+                <h2>⭐ Utmaning</h2>
+
+                <p>
+                    Familjen vill alltid ha minst
+                    <strong>200 liter</strong> kvar.
+                </p>
+
+                <p>
+                    Hur många liter kan de använda från
+                    vattennivån efter regnet utan att komma
+                    under 200 liter?
+                </p>
+
+                <label>
+                    Ditt svar:
+                    <input
+                        type="number"
+                        id="answer5">
+                    liter
+                </label>
+
+                <button onclick="checkAnswer5()">
+                    Kontrollera
+                </button>
+<button onclick="visaResult5()">Visa svaret</button>
+                <div id="result5" class="answer"></div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // -----------------------------
+    // KONSTANTER
+    // -----------------------------
+
+    const diameter = 1.2;
+    const radius = diameter / 2;
+    const height = 1.5;
+
+    // Cylinder
+   let volumeM3,  waterLiters ;
+
+    // Omvandla m3 till liter
+    let totalLiters;
+
+
+
+    // -----------------------------
+    // CANVAS
+    // -----------------------------
+
+    const canvas =
+        document.getElementById("waterCanvas");
+
+    const ctx =
+        canvas.getContext("2d");
+
+        // =====================================================
+// CYLINDER MED VATTENNIVÅ
+// =====================================================
+
+function drawCylinderWithWater(ctx, radius, height, level) {
+      // Cylinder
+    volumeM3 =
+        Math.PI *
+        radius *
+        radius *
+        height;
+
+    // Omvandla m3 till liter
+    totalLiters =
+        volumeM3 * 1000;
+
+
+$("#fylld").text(level + " %");
+ water = totalLiters * level * 0.01; 
+    // Rensa canvas
+   ctx.fillStyle = "#ffffff"; 
+ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    // Kontrollera värden
+    if (!radius || !height || radius <= 0 || height <= 0) {
+        return;
+    }
+
+    // -------------------------------------------------
+    // POSITION OCH SKALNING
+    // -------------------------------------------------
+
+    const centerX = 250;
+    const topY = 80;
+
+    // Maxstorlek på cylindern i pixlar
+    const maxPixelRadius = 100;
+    const maxPixelHeight = 400;
+
+    // Samma skala används både för bredd och höjd.
+    // Därför behålls cylinderens verkliga proportioner.
+    const scaleX = maxPixelRadius / radius;
+    const scaleY = maxPixelHeight / height;
+
+    const scale = Math.min(scaleX, scaleY);
+
+    const scaledRadius = radius * scale;
+    const scaledHeight = height * scale;
+
+    const bottomY = topY + scaledHeight;
+
+    // Ellipsens höjd följer cylinderns bredd
+    const ellipseYRadius = Math.max(
+        8,
+        Math.min(25, scaledRadius * 0.25)
+    );
+
+    // -------------------------------------------------
+    // VATTEN
+    // -------------------------------------------------
+
+    // Vattenhöjden är exakt samma procent av
+    // cylinderns verkliga höjd som slider-värdet.
+    const waterHeight =
+        scaledHeight * (level / 100);
+
+    const waterTop =
+        bottomY - waterHeight;
+
+
+    // -------------------------------------------------
+    // KLIPP VATTNET SÅ ATT DET STANNAR I CYLINDERN
+    // -------------------------------------------------
+
+    ctx.save();
+
+    ctx.beginPath();
+
+    // Cylinderområdet
+    ctx.moveTo(
+        centerX - scaledRadius,
+        topY
+    );
+
+    ctx.lineTo(
+        centerX - scaledRadius,
+        bottomY
+    );
+
+    ctx.lineTo(
+        centerX + scaledRadius,
+        bottomY
+    );
+
+    ctx.lineTo(
+        centerX + scaledRadius,
+        topY
+    );
+
+    ctx.closePath();
+
+    ctx.clip();
+
+
+    // -------------------------------------------------
+    // VATTENFYLLNING
+    // -------------------------------------------------
+
+    ctx.fillStyle = "#4da6ff";
+
+    ctx.fillRect(
+        centerX - scaledRadius,
+        waterTop,
+        scaledRadius * 2,
+        waterHeight + ellipseYRadius
+    );
+
+
+    // -------------------------------------------------
+    // VATTENYTA
+    // -------------------------------------------------
+
+    if (level > 0) {
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+            centerX,
+            waterTop,
+            scaledRadius,
+            ellipseYRadius,
+            0,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle = "#2f8fe8";
+        ctx.fill();
+    }
+
+    ctx.restore();
+
+// Färga övre halvan av övre ellipsen blå vid 100 %
+if (level >= 100) {
+    ctx.save();
+
+    ctx.beginPath();
+    ctx.ellipse(
+        centerX,
+        topY,
+        scaledRadius,
+        ellipseYRadius,
+        0,
+        Math.PI,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle = "#2196F3";
+    ctx.fill();
+
+    ctx.restore();
+}
+    // =================================================
+    // SJÄLVA CYLINDERNS KONTUR
+    // =================================================
+
+    ctx.strokeStyle = "blue";
+    ctx.lineWidth = 3;
+
+    // -------------------------------------------------
+    // ÖVRE ELLIPS
+    // -------------------------------------------------
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        centerX,
+        topY,
+        scaledRadius,
+        ellipseYRadius,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.stroke();
+
+
+    // -------------------------------------------------
+    // VÄNSTER SIDA
+    // -------------------------------------------------
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        centerX - scaledRadius,
+        topY
+    );
+
+    ctx.lineTo(
+        centerX - scaledRadius,
+        bottomY
+    );
+
+    ctx.stroke();
+
+
+    // -------------------------------------------------
+    // HÖGER SIDA
+    // -------------------------------------------------
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        centerX + scaledRadius,
+        topY
+    );
+
+    ctx.lineTo(
+        centerX + scaledRadius,
+        bottomY
+    );
+
+    ctx.stroke();
+
+
+ 
+
+
+    // -------------------------------------------------
+    // BOTTEN – BAKRE HALVAN
+    // -------------------------------------------------
+
+    ctx.beginPath();
+
+    ctx.setLineDash([6, 4]);
+
+    ctx.ellipse(
+        centerX,
+        bottomY,
+        scaledRadius,
+        ellipseYRadius,
+        0,
+        Math.PI,
+        Math.PI * 2
+    );
+
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+// Nedre ellipsen
+ctx.beginPath();
+ctx.ellipse(
+    centerX,
+    bottomY,
+    scaledRadius,
+    ellipseYRadius,
+    0,
+    0,
+    Math.PI * 2
+);
+ctx.stroke();
+
+// Färga nedre halvan blå om det finns vatten
+if (level > 0) {
+    ctx.save();
+
+    ctx.beginPath();
+    ctx.ellipse(
+        centerX,
+        bottomY,
+        scaledRadius,
+        ellipseYRadius,
+        0,
+        0,
+        Math.PI
+    );
+
+    ctx.fillStyle = "#2196F3";
+    ctx.fill();
+
+    ctx.restore();
+}
+
+    // =================================================
+    // RADIE
+    // =================================================
+
+    ctx.strokeStyle = "purple";
+    ctx.lineWidth = 2;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        centerX,
+        topY
+    );
+
+    ctx.lineTo(
+        centerX + scaledRadius,
+        topY
+    );
+
+    ctx.stroke();
+
+
+    ctx.fillStyle = "purple";
+    ctx.font = "bold 16px Arial";
+
+    ctx.fillText(
+        "r = " + radius + " m",
+        centerX + scaledRadius / 2 - 20,
+        topY - 25
+    );
+
+
+    // =================================================
+    // HÖJD
+    // =================================================
+
+    ctx.strokeStyle = "green";
+    ctx.lineWidth = 2;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        centerX + scaledRadius,
+        topY
+    );
+
+    ctx.lineTo(
+        centerX + scaledRadius,
+        bottomY
+    );
+
+    ctx.stroke();
+
+
+    ctx.fillStyle = "green";
+
+    ctx.fillText(
+        "h = " + height + " m",
+        centerX + scaledRadius + 10,
+        topY + scaledHeight / 2
+    );
+
+
+    // =================================================
+    // VATTENNIVÅ
+    // =================================================
+
+    ctx.fillStyle = "#222";
+    ctx.font = "bold 20px Arial";
+
+    ctx.fillText(
+        level + " %",
+        centerX - 30,
+        waterTop - 15
+    );
+
+
+    // =================================================
+    // LITER VATTEN
+    // =================================================
+
+     volumeM3 =
+        Math.PI *
+        radius *
+        radius *
+        height;
+
+     totalLiters =
+        volumeM3 * 1000;
+
+      waterLiters =
+        totalLiters * level / 100;
+
+  
+
+}
+
+
+// =====================================================
+// RITA CYLINDER
+// =====================================================
+
+function ritaCylinder1() {
+
+    const radius =
+        parseFloat($("#r1").val());
+
+    const height =
+        parseFloat($("#h1").val());
+
+    if (
+        isNaN(radius) ||
+        isNaN(height) ||
+        radius <= 0 ||
+        height <= 0
+    ) {
+        alert("Ange en giltig radie och höjd.");
+        return;
+    }
+
+    // Spara värdena som används av slidern
+    currentRadius = radius;
+    currentHeight = height;
+
+    const level =
+        Number($("#levelSlider").val());
+
+    drawCylinderWithWater(
+        ctx,
+        radius,
+        height,
+        level
+    );
+}
+
+
+// =====================================================
+// SLIDER
+// =====================================================
+
+let currentRadius = 0;
+let currentHeight = 0;
+let water = 0;
+
+const slider =
+    document.getElementById("levelSlider");
+
+slider.addEventListener(
+    "input",
+    function () {
+
+        const level =
+            Number(this.value);
+
+        document.getElementById(
+            "levelText"
+        ).textContent = level;
+
+
+        // Om cylindern inte har ritats ännu
+        if (
+            currentRadius <= 0 ||
+            currentHeight <= 0
+        ) {
+            return;
+        }
+
+
+        // Rita om samma cylinder med ny vattennivå
+        drawCylinderWithWater(
+            ctx,
+            currentRadius,
+            currentHeight,
+            level
+        );
+    }
+);
+
+
+    // -----------------------------
+    // PIL
+    // -----------------------------
+
+    function drawArrow(x1, y1, x2, y2) {
+
+        ctx.beginPath();
+
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+
+        ctx.stroke();
+
+    }
+
+
+    
+
+
+    // Första ritningen
+    //drawTank(65);
+
+
+    // -----------------------------
+    // UPPGIFT 1
+    // -----------------------------
+
+    function checkAnswer1() {
+
+        const answer =
+            Number(
+                document.getElementById(
+                    "answer1"
+                ).value
+            );
+
+        const result =
+            document.getElementById(
+                "result1"
+            );
+
+
+        if (
+            Math.abs(answer - totalLiters)
+            < 1
+        ) {
+
+            result.textContent =
+                "✓ Rätt svar!";
+
+            result.className =
+                "answer correct";
+
+        } else {
+
+            result.textContent =
+                "✗ Inte riktigt. Försök igen.";
+
+            result.className =
+                "answer wrong";
+        }
+    }
+
+
+    // -----------------------------
+    // UPPGIFT 2
+    // -----------------------------
+
+    function checkAnswer2() {
+
+        const answer =
+            Number(
+                document.getElementById(
+                    "answer2"
+                ).value
+            );
+
+        const expected =
+            totalLiters * 0.65;
+
+
+        const result =
+            document.getElementById(
+                "result2"
+            );
+
+
+        if (
+            Math.abs(answer - expected)
+            < 1
+        ) {
+
+            result.textContent =
+                "✓ Rätt svar!";
+
+            result.className =
+                "answer correct";
+
+        } else {
+
+            result.textContent =
+                "✗ Inte riktigt. Försök igen.";
+
+            result.className =
+                "answer wrong";
+        }
+    }
+
+function visaResult3() {
+    
+    const water =
+        waterLiters; // Mängden vatten i liter
+
+    const expected =
+        Math.floor(
+            water / 45
+        );
+
+    $("#result3").html(`Rätt svar: ${expected} dagar`);
+
+}
+    // -----------------------------
+    // UPPGIFT 3
+    // -----------------------------
+
+    function checkAnswer3() {
+
+        const answer =
+            Number(
+                document.getElementById(
+                    "answer3"
+                ).value
+            );
+
+
+        const water =
+            waterLiters; // Mängden vatten i liter
+
+        const expected =
+            Math.floor(
+                water / 45
+            );
+
+
+        const result =
+            document.getElementById(
+                "result3"
+            );
+
+
+        if (answer === expected) {
+
+            result.textContent =
+                "✓ Rätt svar!";
+
+            result.className =
+                "answer correct";
+
+        } else {
+
+            result.textContent =
+                "✗ Inte riktigt. Tänk på att vi frågar efter hela dagar.";
+
+            result.className =
+                "answer wrong";
+        }
+    }
+
+function visaResult4() {
+    
+    const initial =waterLiters; // Mängden vatten i liter innan regnet
+
+    const afterRain =   
+        initial + 180;
+
+    const expected =
+        afterRain / totalLiters * 100;
+
+    $("#result4").html(`Rätt svar: ${expected.toFixed(1)} %`);
+}
+    // -----------------------------
+    // UPPGIFT 4
+    // -----------------------------
+
+    function checkAnswer4() {
+
+        const answer =
+            Number(
+                document.getElementById(
+                    "answer4"
+                ).value
+            );
+
+
+        const initial =
+            waterLiters; // Mängden vatten i liter innan regnet
+
+        const afterRain =
+            initial + 180;
+
+        const expected =
+            afterRain / totalLiters * 100;
+
+
+        const result =
+            document.getElementById(
+                "result4"
+            );
+
+
+        if (
+            Math.abs(answer - expected)
+            < 0.5
+        ) {
+
+            result.textContent =
+                "✓ Rätt svar!";
+
+            result.className =
+                "answer correct";
+
+        } else {
+
+            result.textContent =
+                "✗ Inte riktigt. Försök räkna ut hur många liter som finns efter regnet och jämför med hela behållarens volym.";
+
+            result.className =
+                "answer wrong";
+        }
+    }
+
+function visaResult5() {
+    const initial =waterLiters; // Mängden vatten i liter innan regnet    
+      const afterRain =
+            initial + 180;
+
+        const expected =
+            afterRain - 200;
+            if(expected < 0){
+                $("#result5").html(`Rätt svar: 0 liter (det finns inte tillräckligt med vatten)`);  }
+            $("#result5").html(`Rätt svar: ${expected.toFixed(1)} liter`);
+      }
+
+    // -----------------------------
+    // UPPGIFT 5
+    // -----------------------------
+
+    function checkAnswer5() {
+
+        const answer =
+            Number(
+                document.getElementById(
+                    "answer5"
+                ).value
+            );
+
+
+        const initial =waterLiters; // Mängden vatten i liter innan regnet
+
+        const afterRain =
+            initial + 180;
+
+        const expected =
+            afterRain - 200;
+if(expected < 0){
+                expected = 0; // Om det inte finns tillräckligt med vatten, sätt förväntat svar till 0
+            }
+
+        const result =
+            document.getElementById(
+                "result5"
+            );
+
+
+        if (
+            Math.abs(answer - expected)
+            < 1
+        ) {
+
+            result.textContent =
+                "✓ Rätt svar!";
+
+            result.className =
+                "answer correct";
+
+        } else {
+
+            result.textContent =
+                "✗ Inte riktigt. Ta mängden vatten efter regnet och subtrahera 200 liter.";
+
+            result.className =
+                "answer wrong";
+        }
+    }
+
+
+    $(document).ready(function() {
+    
+    $("#saveBtn1").on("click", function() {
+        // 1. Hämta canvas-elementet (med index 0 för att få DOM-elementet)
+        var canvas = $("#waterCanvas")[0];
+        
+        // 2. Gör om canvasens innehåll till en PNG-bild (Data URL)
+        var imageURI = canvas.toDataURL("image/png");
+        
+        // 3. Skapa en dold nerladdningslänk i bakgrunden
+        var downloadLink = document.createElement("a");
+        downloadLink.download = "cylinder_ritning.png"; // Namnet på filen som sparas
+        downloadLink.href = imageURI;
+        
+        // 4. Trigga klicket på länken för att starta nerladdningen
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    });
+    
+    });
+
+    function visaVolym() {
+   
+    $("#volym-resultat").html(`Total volym: ${Math.round(totalLiters)} liter`);
+    }
+    function visaResult2() {
+   
+    $("#result2").html(`Vattens volym: ${Math.round( waterLiters)} l`);
+  }
+  
+
+
+
+  </script>
+  <footer class="footer">
+  <p>&copy; 2025 Irina Hagman </p>
+</footer>
+
+       <script src="./CommonPHP/js/menu.js" ></script>
+</body>
+</html>

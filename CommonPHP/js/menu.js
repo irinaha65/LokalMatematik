@@ -37,6 +37,9 @@ const menus=[
          {
         name: "Trigonometri",
         link: "sinCos.html" },
+         {
+        name: "Behållare",
+        link: "behållareFylld.html" },
     ]
 //fylla sidopanelen med menyval
  
