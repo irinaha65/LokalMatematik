@@ -18,7 +18,7 @@
  
 <link rel="stylesheet" href="./CommonPHP/css/bootstrap.min.css">
 
-<link rel="stylesheet" href="./CommonPHP/css/custom.css" />
+
 
 <script src="./CommonPHP/js/jquery-4.0.0.min.js"   ></script>
 <!--<link rel="stylesheet" href="https://frozenland.servegame.com/CommonPHP/css/solar-bootstrap.css" />-->
@@ -52,6 +52,7 @@
                                 data-discover="true"><span class="name">Hem</span></a>
                                    </h1>
                 </div>
+                <main>
   <h1>Sinus och cosinus</h1>
 <table>
   <tr><td>
@@ -62,28 +63,29 @@
   -->
   <section>
     <h2>1. Beräkna sidans längd</h2>
- <!--   <label>Sida AB (cm): <input type="number" id="a1"  step="0.01" min="2" placeholder="0.00"></label><br>
-    <label>Sida AC (cm): <input type="number" id="b1"  step="0.01" min="2" placeholder="0.00"></label><br>
-     <label>Vinkel A (°): <input type="number" id="angle1"  step="0.01" min="0.1" placeholder="0.00"></label><br>
-   -->  <button onclick="visaText1()">Visa text</button>
+    <label>Sida AB (cm): 
+        <input type="number" id="a1"   min="10" max="300" placeholder="0.00"></label>
+    <label>Sida AC (cm): <input type="number"  id="b1"  min="10" max="300" placeholder="0.00"></label>
+     <label>Vinkel A (°): <input type="number" id="angleA1"  min="25" max="167" placeholder="0.00"></label>
+    <button onclick="visaText1()">Visa text</button>
      <button onclick="drawTriangle1()">Rita triangel</button>
     <button onclick="beraknaSida1()">Beräkna sidlängd</button>
       <button id="saveBtn1" type="button">Spara bild</button>
         <p id="text1" ></p>
-       <br>
+       <br/>
     <p id="sida1"></p>
   </section>
   </td>
-  <td><canvas id="canvas1" width="250" height="250"></canvas></td>
+  <td><canvas id="canvas1" width="400" height="400"></canvas></td>
 </tr>
   <tr>
     <td> 
   <!-- Uppgift 2 -->
   <section>
     <h2>2. Drönarhöjd</h2>
-    <label>Avstånd (m): <input type="number" id="a2"  step="0.01" min="0.1" placeholder="0.00"></label><br>
-    <label>Vinkel1 (°): <input type="number" id="v21"  step="0.01" min="0.1" placeholder="0.00"></label><br>
-    <label>Vinkel2 (°): <input type="number" id="v22"  step="0.01" min="0.1" placeholder="0.00"></label><br>
+    <label>Avstånd (m): <input type="number" id="a2"   placeholder="0.00"></label><br>
+    <label>Vinkel1 (°): <input type="number" id="v21"  min="5" placeholder="0.00"></label><br>
+    <label>Vinkel2 (°): <input type="number" id="v22"  min="5" placeholder="0.00"></label><br>
      <button onclick="visaText2()">Visa text</button>
     <button onclick="drawDronareUppgift()">Rita bilden</button>
     <button onclick="beraknaHöjd()">Beräkna höjd</button>
@@ -92,35 +94,17 @@
        <br>
     <p id="resultat2"></p>
   </section> </td>
-   <td><canvas id="canvas2" width="250" height="250"></canvas></td>
+   <td><canvas id="canvas2" width="500" height="400"></canvas></td>
   </tr>
-  <tr>
-    <td>
-  <!-- Uppgift 3 -->
-  <section>
-    <h2>3. Mantelyta</h2>
-    <label>Radie (cm): <input type="number" id="r3"  step="0.01" min="0.1" placeholder="0.00"></label><br>
-    <label>Höjd (cm): <input type="number" id="h3"  step="0.01" min="0.1" placeholder="0.00 "></label><br>
-     <button onclick="visaText3()">Visa text</button>
-     <button onclick="ritaMantel()">Rita cylinder</button> 
-     <button onclick="beraknaMantelyta()">Beräkna mantelyta</button>
-      <button id="saveBtn3" type="button">Spara bild</button>
-       <p id="text3" ></p>
-       <br>
-    <p id="mantel-resultat" ></p>
-  </section>
-
-    </td>
-     <td><canvas id="canvas3" width="350" height="250"></canvas></td>
-  </tr>
+  
 
 </table>
- 
-
-
+ </main>
   <footer class="footer">
   <p>&copy; 2025 Irina Hagman </p>
 </footer>
+
+ 
 
        <script src="./CommonPHP/js/menu.js" ></script>
     <script   >
@@ -193,24 +177,24 @@ polygon.lengths = [];
  
 function visaText1(){
    // === Parametrar ===
-
-   /* const a = $("[id='a1']").val();     // Sida AB
+   // const a = slumpTal(100, 200, false);     // Sida AB
+   // const b = slumpTal(120, 200, false);     // Sida AC
+   // const angleA_deg = slumpTal(25, 67, false); // Vinkel mellan dem (∠A i grader)
+    
+    const a = $("[id='a1']").val();     // Sida AB
     const b = $("[id='b1']").val();     // Sida AC
-    const angleA_deg = $("[id='angleA1']").val(); // Vinkel mellan dem (∠A i grader)*/
-     // === Parametrar ===
-    const a = 100;     // Sida AB
-    const b = 150;     // Sida AC
-    const angleC_deg = 60; // Vinkel mellan dem (∠A i grader)
-     visibles = { angleA: false, angleB: false, angleC: true, sidea: true, lengtha: true, sideb: true, lengthb: true, sidec: false }
-                
-    getPolygon(a, b, angleC_deg);
+    const angleA_deg = $("[id='angleA1']").val(); // Vinkel mellan dem (∠A i grader) 
+    visibles = { angleA: false, angleB: false, angleC: true, sidea: true, lengtha: true, sideb: true, lengthb: true, sidec: false }
+            console.log('visaText1', a, b, angleA_deg);    
+    getPolygon(a, b, angleA_deg);
     $("#text1").html('I en triangel ABC är ∠C = ' + polygon.angles[0] +
                     '°, sidor a = ' + polygon.lengths[0] + ' cm och b = '
                     + polygon.lengths[1] + ' cm. Beräkna längden på sida c. Svara i cm');
 }
  
   function beraknaSida1() {
-              $("[id='sida1']").val(polygon.lengths[2] + ' cm')
+              $("[id='sida1']").html(polygon.lengths[2] + ' cm')
+            }
           //  },
           //  tipsArray: ['Använd cosinussatsen: a²=b²+c²−2bc⋅cosα',]
       //  }, {
@@ -258,7 +242,7 @@ function visaText1(){
         }   
 
        function beraknaHöjd() {
-            r$("[id='resultat2']").val((polygon.lengths[0] * Math.sin((polygon.angles[2]) * Math.PI / 180)).toFixed(2) + ' m')
+            $("[id='resultat2']").val((polygon.lengths[0] * Math.sin((polygon.angles[2]) * Math.PI / 180)).toFixed(2) + ' m')
         }
       
         tipsArray: ['Punkten A och B är på marken, C är drönaren i luften.',
@@ -274,7 +258,7 @@ function visaText1(){
             '𝐴𝐶≈120⋅ 0.7314 / 0.9816', '𝐴𝐶≈87.77 / 0.9816'
             , 'Använd höjdformeln i triangel (från vinkel ∠A)',
             'h=AC⋅sin(32°)', 'h≈89.45⋅sin(32°)≈89.45⋅0.5299 m']
-    }
+    
 
  
 
@@ -285,17 +269,19 @@ function visaText1(){
 
 // draw everything
 function drawTriangle1() {
-    let ctx=$("#canvas1")[0].getContext("2d");
- // Lägg till detta i början av din getCilnder-funktion:
-ctx.fillStyle = "#ffffff"; 
-ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-getPolygon();
+
+    const a = $("[id='a1']").val();     // Sida AB
+    const b = $("[id='b1']").val();     // Sida AC
+    const angleA_deg = $("[id='angleA1']").val(); // Vinkel mellan dem (∠A i grader) 
+    visibles = { angleA: false, angleB: false, angleC: true, sidea: true, lengtha: true, sideb: true, lengthb: true, sidec: true }
+            console.log('visaText1', a, b, angleA_deg);    
+    getPolygon(a, b, angleA_deg);
     drawTriangleWithTwoSidesAndAngleBetween(polygon)
 
 }
 
 
-function getPolygon(a = 150, b = 100, angleA_deg = 60) {
+function getPolygon(a, b, angleA_deg) {
 
 
     // === Parametrar ==
@@ -315,12 +301,13 @@ function getPolygon(a = 150, b = 100, angleA_deg = 60) {
 
     // === Triangelpunkter ===
     const Ax = 20, Ay = 200;
-    const Bx = Ax + a, By = Ay;
+    const Bx = Ax + parseInt(a), By = Ay;
     const Cx = Ax + b * Math.cos(angleA_rad);
     const Cy = Ay - b * Math.sin(angleA_rad);
+
     polygon.corners = [{ x: Ax, y: Ay }, { x: Bx, y: By }, { x: Cx, y: Cy }
     ];
-    polygon.angles = [angleA_deg.toFixed(0), angleB_deg.toFixed(0), angleC_deg.toFixed(0)];
+    polygon.angles = [angleA_deg, angleB_deg.toFixed(0), angleC_deg.toFixed(0)];
     polygon.lengths = [b, a, c.toFixed(2)];
 
     console.dir(polygon);
@@ -331,174 +318,706 @@ function getPolygon(a = 150, b = 100, angleA_deg = 60) {
 
 }
 function drawTriangleWithTwoSidesAndAngleBetween(polygon) {
-    console.dir(polygon);
-let ctx=$("#canvas1")[0].getContext("2d");
-    // === Rita triangeln ===
+const offset = 7;
+    const canvas = $("#canvas1")[0];
+    const ctx = canvas.getContext("2d");
+    // Rensa canvas
+   ctx.fillStyle = "#ffffff"; 
+ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    const canvasWidth = 400;
+    const canvasHeight = 400;
+
+    // ==========================================
+    // 1. Hämta originalkoordinater
+    // ==========================================
+
+    const points = polygon.corners.map(p => ({
+        x: p.x,
+        y: p.y
+    }));
+
+    // ==========================================
+    // 2. Hitta triangelns storlek
+    // ==========================================
+
+    const minX = Math.min(...points.map(p => p.x));
+    const maxX = Math.max(...points.map(p => p.x));
+    const minY = Math.min(...points.map(p => p.y));
+    const maxY = Math.max(...points.map(p => p.y));
+
+    const width = maxX - minX;
+    const height = maxY - minY;
+
+    // ==========================================
+    // 3. Beräkna skala
+    // ==========================================
+
+    // Marginal runt triangeln
+    const margin = 60;
+
+    const scaleX = (canvasWidth - 2 * margin) / width;
+    const scaleY = (canvasHeight - 2 * margin) / height;
+
+    // Samma skala i båda riktningarna!
+    const scale = Math.min(scaleX, scaleY);
+
+    // ==========================================
+    // 4. Omvandla till canvas-koordinater
+    // ==========================================
+
+    const scaledPoints = points.map(p => ({
+        x: (p.x - minX) * scale + margin,
+        y: (p.y - minY) * scale + margin
+    }));
+
+    // ==========================================
+    // 5. Rita triangeln
+    // ==========================================
+
+
     ctx.beginPath();
-    ctx.moveTo(polygon.corners[0].x, polygon.corners[0].y);
-    for (let i = 1; i < polygon.corners.length; i++) {
-        ctx.lineTo(polygon.corners[i].x, polygon.corners[i].y);
+
+    ctx.moveTo(
+        scaledPoints[0].x,
+        scaledPoints[0].y
+    );
+
+    for (let i = 1; i < scaledPoints.length; i++) {
+        ctx.lineTo(
+            scaledPoints[i].x,
+            scaledPoints[i].y
+        );
     }
 
-
     ctx.closePath();
+
     ctx.strokeStyle = "blue";
     ctx.lineWidth = 2;
     ctx.stroke();
 
+    // ==========================================
+    // 6. Vinkelbågar
+    // ==========================================
 
+    // Vinkelbågens storlek ska också skalas,
+    // men vi begränsar den så att den inte blir
+    // för stor eller för liten.
 
-    // === Rita bågar i alla hörn ===
-    drawAngleArc(polygon.corners[0].x, polygon.corners[0].y, polygon.corners[1], polygon.corners[2], " ", "orange");
-    drawAngleArc(polygon.corners[1].x, polygon.corners[1].y, polygon.corners[2], polygon.corners[0], " ", "green");
-    drawAngleArc(polygon.corners[2].x, polygon.corners[2].y, polygon.corners[0], polygon.corners[1], " ", "red");
+    const arcSize = Math.max(10, Math.min(25, 20 * scale));
 
-    // === Märk hörn ===
-    console.dir(visibles)
-    ctx.font = "12px Arial";
+  
+  
+ 
+    // ==========================================
+    // 7. Märk hörn
+    // ==========================================
+
+    ctx.font = "bold 12px Arial";
+
     if (visibles.angleC) {
-        ctx.fillStyle = "orange";
-        ctx.fillText(`∠C = ${polygon.angles[0]}°`, polygon.corners[0].x - 20, polygon.corners[0].y + 20);
+     drawAngleArc(
+        scaledPoints[0].x,
+        scaledPoints[0].y,
+        scaledPoints[1],
+        scaledPoints[2],
+        "",
+        "brown",
+        arcSize,
+        polygon.angles[0]
+    );
+
+
+        ctx.fillStyle = "brown";
+
+        ctx.fillText(
+            `∠C = ${polygon.angles[0]}°`,
+            scaledPoints[0].x - 20,
+            scaledPoints[0].y + 20
+        );
     }
 
     if (visibles.angleB) {
+         drawAngleArc(
+        scaledPoints[2].x,
+        scaledPoints[2].y,
+        scaledPoints[0],
+        scaledPoints[1],
+        "",
+        "red",
+        arcSize,
+        polygon.angles[1]
+    );
         ctx.fillStyle = "red";
-        ctx.fillText(`∠B = ${polygon.angles[1]}°`, polygon.corners[2].x + 5, polygon.corners[2].y - 5);
+
+        ctx.fillText(
+            `∠B = ${polygon.angles[1]}°`,
+            scaledPoints[2].x + 5,
+            scaledPoints[2].y - 5
+        );
     }
+
     if (visibles.angleA) {
+               drawAngleArc(
+        scaledPoints[1].x,
+        scaledPoints[1].y,
+        scaledPoints[2],
+        scaledPoints[0],
+        "",
+        "green",
+        arcSize,
+        polygon.angles[2]
+    );
+  
         ctx.fillStyle = "green";
-        ctx.fillText(`∠A = ${polygon.angles[2]}°`, polygon.corners[1].x - 20, polygon.corners[1].y + 20);
+
+        ctx.fillText(
+            `∠A = ${polygon.angles[2]}°`,
+            scaledPoints[1].x - 20,
+            scaledPoints[1].y + 20
+        );
     }
 
-    // === Visa sidlängder ===
+    // ==========================================
+    // 8. Visa sidlängder
+    // ==========================================
+
     ctx.fillStyle = "darkblue";
-    let txt = ""
+
+    let txt = "";
+
     if (visibles.sideb) {
-        txt += 'b= ' + (visibles.lengthb ? +polygon.lengths[1] : '? ')
+        txt += "b= " +
+            (visibles.lengthb
+                ? polygon.lengths[1]
+                : "?");
     }
 
-    ctx.fillText(txt, (polygon.corners[0].x + polygon.corners[1].x) / 2 - 15, polygon.corners[0].y + 15);
-    txt = ""
-    if (visibles.sidea)
-        txt += 'a=' + (visibles.lengtha ? polygon.lengths[0] : '? ')
+    ctx.fillText(
+        txt,
+        (scaledPoints[0].x + scaledPoints[1].x) / 2 - 10,
+        (scaledPoints[0].y + scaledPoints[1].y) / 2 +20
+    );
 
-    ctx.fillText(txt, (polygon.corners[0].x + polygon.corners[2].x) / 2 - 40, (polygon.corners[0].y + polygon.corners[2].y) / 2);
-    txt = ""
-    if (visibles.sidec) {
-        txt += 'c=' + (visibles.lengthc ? polygon.lengths[2] : '?')
+    txt = "";
+
+    if (visibles.sidea) {
+        txt += "a=" +
+            (visibles.lengtha  ? polygon.lengths[0]  : "?");
     }
-    console.log(visibles.sidec)
-    ctx.fillText(txt, (polygon.corners[1].x + polygon.corners[2].x) / 2 + 30, (polygon.corners[1].y + polygon.corners[2].y) / 2);
+if (txt !== "") {
 
+    const p1 = scaledPoints[0];
+    const p2 = scaledPoints[2];
 
+    // Mittpunkt på sidan
+    const midX = (p1.x + p2.x) / 2;
+    const midY = (p1.y + p2.y) / 2;
 
+    // Sidans riktning
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+
+    // Normalvektor
+    let nx = -dy;
+    let ny = dx;
+
+    // Normalisera
+    const len = Math.sqrt(nx * nx + ny * ny);
+    nx /= len;
+    ny /= len;
+
+    // Den tredje punkten ligger inne i triangeln
+    const opposite = scaledPoints[1];
+
+    // Vektor från sidans mittpunkt till tredje hörnet
+    const toOppositeX = opposite.x - midX;
+    const toOppositeY = opposite.y - midY;
+
+    // Om normalen pekar mot triangeln → vänd den
+    const dot =
+        nx * toOppositeX +
+        ny * toOppositeY;
+
+    if (dot > 0) {
+        nx = -nx;
+        ny = -ny;
+    }
+
+    // Avstånd från sidan
+    const offset = 27;
+
+    const textX = midX + nx * offset;
+    const textY = midY + ny * offset;
+
+    ctx.fillText(txt, textX, textY);
 }
-// === Funktion för att rita vinkelbåge ===
-function drawAngleArc(cx, cy, fromPt, toPt, label, color, offset = 20) {
-    const dx1 = fromPt.x - cx, dy1 = fromPt.y - cy;
-    const dx2 = toPt.x - cx, dy2 = toPt.y - cy;
+   /* ctx.fillText(
+        txt,
+        (scaledPoints[0].x )  - 10,
+        (scaledPoints[0].y + scaledPoints[2].y) / 2-10
+    );*/
+
+    txt = "";
+
+    if (visibles.sidec) {
+        txt += "c=" +
+            (visibles.lengthc
+                ? polygon.lengths[2]
+                : "?");
+    }
+
+    ctx.fillText(
+        txt,
+        (scaledPoints[1].x + scaledPoints[2].x) / 2 + 15,
+        (scaledPoints[1].y + scaledPoints[2].y) / 2
+    );
+}
+
+
+// ==========================================
+// Rita vinkelbåge
+// ==========================================
+
+function drawAngleArc(cx, cy, fromPt, toPt, label, color, offset = 20,angle) {
+
+    const dx1 = fromPt.x - cx;
+    const dy1 = fromPt.y - cy;
+
+    const dx2 = toPt.x - cx;
+    const dy2 = toPt.y - cy;
+
     const start = Math.atan2(dy1, dx1);
     const end = Math.atan2(dy2, dx2);
-let ctx=$("#canvas1")[0].getContext("2d");
+
+    // Beräkna den kortaste vinkeln mellan strålarna
+    let delta = end - start;
+
+    // Normalisera till -PI ... +PI
+    while (delta > Math.PI) {
+        delta -= 2 * Math.PI;
+    }
+
+    while (delta < -Math.PI) {
+        delta += 2 * Math.PI;
+    }
+
+    const finalEnd = start + delta;
+
+    const ctx = $("#canvas1")[0].getContext("2d");
+ // ==========================================
+    // 90 grader -> rita liten fyrkant
+    // ==========================================
+
+    if (Math.abs(angle - 90) < 0.5) {
+
+        const size = offset;
+
+        // Enhetsvektorer längs de två sidorna
+        const len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+        const len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+
+        const ux1 = dx1 / len1;
+        const uy1 = dy1 / len1;
+
+        const ux2 = dx2 / len2;
+        const uy2 = dy2 / len2;
+
+        // Tre hörn på den lilla fyrkanten
+        const p1 = {
+            x: cx + ux1 * size,
+            y: cy + uy1 * size
+        };
+
+        const p2 = {
+            x: p1.x + ux2 * size,
+            y: p1.y + uy2 * size
+        };
+
+        const p3 = {
+            x: cx + ux2 * size,
+            y: cy + uy2 * size
+        };
+
+        ctx.beginPath();
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.lineTo(p3.x, p3.y);
+
+        ctx.stroke();
+
+        return;
+    }
+
     ctx.beginPath();
+
     ctx.strokeStyle = color;
     ctx.lineWidth = 2;
-    ctx.arc(cx, cy, offset, start, end, true);
+
+    // delta < 0 betyder moturs i canvasens koordinatsystem
+    ctx.arc(
+        cx,
+        cy,
+        offset,
+        start,
+        finalEnd,
+        delta < 0
+    );
+
     ctx.stroke();
 
-    // Text mitt i bågen
-    const midAngle = (start + end) / 2;
-    const tx = cx + offset * Math.cos(midAngle);
-    const ty = cy + offset * Math.sin(midAngle);
-    ctx.fillStyle = color;
-    ctx.font = "14px Arial";
-    ctx.fillText(label, tx - 10, ty + 5);
+    // =====================================
+    // Text mitt i vinkeln
+    // =====================================
+
+    const midAngle = start + delta / 2;
+
+    const tx = cx + (offset + 8) * Math.cos(midAngle);
+    const ty = cy + (offset + 8) * Math.sin(midAngle);
+
+    if (label) {
+        ctx.fillStyle = color;
+        ctx.font = "14px Arial";
+
+        ctx.fillText(
+            label,
+            tx - 10,
+            ty + 5
+        );
+    }
 }
 function drawDronareUppgift() {
+
     // === Grunddata ===
     const angleA_deg = 32;
     const angleB_deg = 47;
     const angleC_deg = 180 - angleA_deg - angleB_deg;
+
     const AB = 120;
-    let ctx=$("#canvas2")[0].getContext("2d");
- // Lägg till detta i början av din getCilnder-funktion:
-ctx.fillStyle = "#ffffff"; 
-ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    // === Skala och punkter ===
+
+    const canvas = $("#canvas2")[0];
+    const ctx = canvas.getContext("2d");
+
+    // === Skala ===
     const scale = 3;
-    const Ax = 50, Ay = 250;
-    const Bx = Ax + AB * scale, By = Ay;
+
+    // === Punkter A och B ===
+    const Ax = 50;
+    const Ay = 250;
+
+    const Bx = Ax + AB * scale;
+    const By = Ay;
 
     // === Sinusberäkningar ===
     const angleA_rad = angleA_deg * Math.PI / 180;
+
     const sinC = Math.sin(angleC_deg * Math.PI / 180);
     const sinB = Math.sin(angleB_deg * Math.PI / 180);
+
     const AC = AB * sinB / sinC;
     const AC_scaled = AC * scale;
 
-    let progress = 0;  // animation 0 → 1
+    let progress = 0;
+
+
+    // ==========================================
+    // Rita vinkelbåge
+    // ==========================================
+
+   function drawArcAtVertex(vertex, p1, p2, radius, color) {
+
+    // Vektor 1
+    let v1x = p1.x - vertex.x;
+    let v1y = p1.y - vertex.y;
+
+    // Vektor 2
+    let v2x = p2.x - vertex.x;
+    let v2y = p2.y - vertex.y;
+
+    // Normalisera vektorerna
+    const len1 = Math.sqrt(v1x * v1x + v1y * v1y);
+    const len2 = Math.sqrt(v2x * v2x + v2y * v2y);
+
+    v1x /= len1;
+    v1y /= len1;
+
+    v2x /= len2;
+    v2y /= len2;
+
+    // Vinkelbisektris
+    let bx = v1x + v2x;
+    let by = v1y + v2y;
+
+    const blen = Math.sqrt(bx * bx + by * by);
+
+    bx /= blen;
+    by /= blen;
+
+    // Riktningen för bisektrisen
+    const middleAngle = Math.atan2(by, bx);
+
+    // Själva vinkeln
+    const dot = v1x * v2x + v1y * v2y;
+
+    const angle = Math.acos(
+        Math.max(-1, Math.min(1, dot))
+    );
+
+    // Börja halva vinkeln före bisektrisen
+    const startAngle =
+        middleAngle - angle / 2;
+
+    // Sluta halva vinkeln efter bisektrisen
+    const endAngle =
+        middleAngle + angle / 2;
+
+    // Rita bågen
+    ctx.beginPath();
+
+    ctx.arc(
+        vertex.x,
+        vertex.y,
+        radius,
+        startAngle,
+        endAngle,
+        false
+    );
+
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+}
+
+
+    // ==========================================
+    // Animation
+    // ==========================================
 
     function drawFrame() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // === Räkna punkt C:s läge efter "progress" av lyft ===
+        // === Rensa canvas ===
+
+        ctx.fillStyle = "#ffffff";
+
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        // ==========================================
+        // Punkt C
+        // ==========================================
+
         const curr_AC = AC_scaled * progress;
-        const Cx = Ax + curr_AC * Math.cos(angleA_rad);
-        const Cy = Ay - curr_AC * Math.sin(angleA_rad);
 
-        // === Rita triangeln ===
+        const Cx =
+            Ax +
+            curr_AC * Math.cos(angleA_rad);
+
+        const Cy =
+            Ay -
+            curr_AC * Math.sin(angleA_rad);
+
+
+        // ==========================================
+        // Rita triangeln
+        // ==========================================
+
         ctx.beginPath();
+
         ctx.moveTo(Ax, Ay);
         ctx.lineTo(Bx, By);
         ctx.lineTo(Cx, Cy);
         ctx.closePath();
+
         ctx.strokeStyle = "blue";
         ctx.lineWidth = 2;
+
         ctx.stroke();
 
-        // === Höjdlinje från C till marken ===
+
+        // ==========================================
+        // Höjdlinje
+        // ==========================================
+
         ctx.beginPath();
+
         ctx.moveTo(Cx, Cy);
         ctx.lineTo(Cx, Ay);
+
         ctx.setLineDash([5, 5]);
-        ctx.strokeStyle = "orange";
+
+        ctx.strokeStyle = "brown";
+        ctx.lineWidth = 1;
+
         ctx.stroke();
+
         ctx.setLineDash([]);
 
-        // === Märk hörn ===
+
+        // ==========================================
+        // VINKELBÅGAR
+        // ==========================================
+
+        if (progress > 0.15) {
+
+            // Vinkel A = 32°
+            drawArcAtVertex(
+                { x: Ax, y: Ay },
+                { x: Bx, y: By },
+                { x: Cx, y: Cy },
+                25,
+                "green"
+            );
+
+
+            // Vinkel B = 47°
+            drawArcAtVertex(
+                { x: Bx, y: By },
+                { x: Ax, y: Ay },
+                { x: Cx, y: Cy },
+                25,
+                "red"
+            );
+
+
+        /*    // Vinkel C = 101°
+            drawArcAtVertex(
+                { x: Cx, y: Cy },
+                { x: Ax, y: Ay },
+                { x: Bx, y: By },
+                25,
+                "brown"
+            );*/
+        }
+
+
+        // ==========================================
+        // Hörn
+        // ==========================================
+
         ctx.fillStyle = "black";
         ctx.font = "16px Arial";
-        ctx.fillText("A", Ax - 10, Ay + 20);
-        ctx.fillText("B", Bx + 5, By + 20);
-        ctx.fillText("C", Cx + 5, Cy - 5);
 
-        // === Skriv höjdvärde ===
-        const h = curr_AC * Math.sin(angleA_rad);
+        ctx.fillText(
+            "A",
+            Ax - 10,
+            Ay + 20
+        );
+
+        ctx.fillText(
+            "B",
+            Bx + 5,
+            By + 20
+        );
+
+    /*    ctx.fillText(
+            "C",
+            Cx + 5,
+            Cy - 5
+        );*/
+
+
+        // ==========================================
+        // Vinkel A
+        // ==========================================
+
         ctx.fillStyle = "green";
-        ctx.fillText(`h ≈ ${h.toFixed(1)} m`, Cx + 5, Cy + (Ay - Cy) / 2);
 
-        // === Vinklar och sidor ===
+        ctx.fillText(
+            "32°",
+            Ax + 40,
+            Ay - 10
+        );
+
+
+        // ==========================================
+        // Vinkel B
+        // ==========================================
+
+        ctx.fillStyle = "red";
+
+        ctx.fillText(
+            "47°",
+            Bx - 45,
+            By - 10
+        );
+
+
+        // ==========================================
+        // Vinkel C
+        // ==========================================
+/*
+        if (progress > 0.15) {
+
+            ctx.fillStyle = "brown";
+
+            ctx.fillText(
+                angleC_deg.toFixed(0) + "°",
+                Cx - 20,
+                Cy + 30
+            );
+        }
+*/
+
+        // ==========================================
+        // Höjd
+        // ==========================================
+
+     /*   const h =
+            curr_AC *
+            Math.sin(angleA_rad);
+
+        ctx.fillStyle = "green";
+
+        ctx.fillText(
+            `h ≈ ${h.toFixed(1)} m`,
+            Cx + 5,
+            Cy + (Ay - Cy) / 2
+        );
+
+*/
+        // ==========================================
+        // Sidan AB
+        // ==========================================
+
         ctx.fillStyle = "black";
-        ctx.fillText("32°", Ax + 10, Ay - 10);
-        ctx.fillText("47°", Bx - 40, By - 10);
-        ctx.fillText("120 m", (Ax + Bx) / 2 - 20, Ay + 20);
 
-        // === Nästa frame ===
+        ctx.fillText(
+            "120 m",
+            (Ax + Bx) / 2 - 20,
+            Ay + 20
+        );
+
+
+        // ==========================================
+        // Nästa frame
+        // ==========================================
+
         if (progress < 1) {
+
             progress += 0.01;
-            idAnimation = requestAnimationFrame(drawFrame);
+
+            idAnimation =
+                requestAnimationFrame(drawFrame);
         }
     }
 
-    // Starta animationen
+
+    // ==========================================
+    // Starta animation
+    // ==========================================
+
     drawFrame();
 }
 
-
-
-
-
-
     </script>
+   
 </body>
 </html>

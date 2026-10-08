@@ -85,7 +85,7 @@ menus.forEach((menu) => {
     let row = `<li class="signupButton"><a href="${menu.link}" ><span class="name"> ${menu.name}</span></a></li>`;
     sidebar.append(row);
 });
-console.log("menu.js loaded", sidebar, openBtn, closeBtn);
+//console.log("menu.js loaded", sidebar, openBtn, closeBtn);
  $("#openBtn").on("click", () => {
       sidebar.addClass("open");
 });

@@ -220,7 +220,8 @@ optgroup {
 
 table {
     border-spacing: 0;
-    border-collapse: collapse
+    border-collapse: collapse;
+    margin-left: 20px;
 }
 
 td,
@@ -8904,34 +8905,16 @@ body {
     -webkit-print-color-adjust: exact;
     -webkit-text-size-adjust: none;
     text-size-adjust: none;
-    overflow-y: scroll;
+
     margin: 0;
-    height: 100%;
-    padding-bottom: 50px
+    height: auto;
+  
 }
 
 @media all and (max-width:767px) {
-    body {
-        padding-bottom: 230px
-    }
+ 
 }
 
-html,
-body {
-    overscroll-behavior-x: none
-}
-
-body.chartGrid {
-    overflow: hidden;
-    overflow-x: hidden;
-    overflow-y: hidden
-}
-
-body.pullToRefresh {
-    overflow: hidden;
-    overflow-x: hidden;
-    overflow-y: hidden
-}
 
 body.modal-open {
     overflow: hidden
@@ -9771,10 +9754,12 @@ header h1 {
 }
 
 footer {
-    position: absolute;
+
     left: 0;
+    bottom: 0;
     width: 100%;
-    background-color: #eee
+    background-color: #eee;
+   
 }
 
 footer .content {
@@ -9788,7 +9773,8 @@ footer p {
     margin: 0;
     margin-top: 3px;
     margin-bottom: 3px;
-    line-height: 125%
+    line-height: 125%;
+     vertical-align: bottom;
 }
 
 .modal-title {
