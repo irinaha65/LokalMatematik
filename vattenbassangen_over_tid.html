@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matematik 1 – Vattenbassängen över tid</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f2f6f8;color:#222;margin:0;padding:18px;line-height:1.5}
+.container{max-width:1150px;margin:22px auto;background:#fff;padding:24px;border-radius:15px;box-shadow:0 4px 15px #0002}
+h1{margin-top:0;color:#163d62}h2{margin-top:0}
+.intro{font-size:1.05rem}
+.layout{display:grid;grid-template-columns:minmax(280px,1fr) minmax(300px,1fr);gap:22px;align-items:start}
+.panel,.question{background:#f7f9fa;border-radius:12px;padding:17px;margin:14px 0}
+canvas{width:100%;max-width:520px;height:auto;background:#eef4f7;border:1px solid #c4d0d8;border-radius:10px;display:block;margin:auto}
+label{display:block;font-weight:bold;margin:12px 0 5px}
+input[type=number]{width:115px;max-width:100%;padding:8px;font-size:16px;border:1px solid #9eabb5;border-radius:6px}
+input[type=range]{width:100%}
+button{padding:10px 15px;border:0;border-radius:7px;background:#1769aa;color:#fff;font-size:16px;cursor:pointer;margin:7px 5px 0 0}
+button.secondary{background:#526575}button:hover{filter:brightness(.93)}
+.stat{font-size:1.08rem;font-weight:bold;margin:8px 0}
+.highlight{color:#075e9c}.small{font-size:.92rem;color:#52616b}
+.question{background:#eef5ff;border-left:5px solid #4285f4}
+.feedback{font-weight:bold;margin-top:8px;min-height:1.5em}.correct{color:green}.wrong{color:#a00000}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:end}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.container{padding:15px}body{padding:8px}}
+</style>
+</head>
+<body>
+<main class="container">
+<h1>💧 Matematik 1 – Vattenbassängen förändras med tiden</h1>
+<p class="intro">En vattenbassäng innehåller en viss mängd vatten från början. Vatten rinner ut med jämn hastighet. Undersök hur vattenmängden förändras och hur lång tid det tar innan bassängen är tom.</p>
+
+<div class="layout">
+<section>
+  <div class="panel">
+    <h2>1. Bassängen</h2>
+    <p>Vi modellerar bassängen som en cylinder. Ändra måtten och mängden vatten från början.</p>
+    <div class="row">
+      <div><label for="radius">Radie (m)</label><input id="radius" type="number" min="0.1" step="0.1" value="2"></div>
+      <div><label for="height">Höjd (m)</label><input id="height" type="number" min="0.1" step="0.1" value="1.5"></div>
+    </div>
+    <label for="initial">Vatten från början (liter)</label>
+    <input id="initial" type="number" min="0" step="10" value="6000">
+    <label for="outflow">Vatten som rinner ut (liter per timme)</label>
+    <input id="outflow" type="number" min="0" step="10" value="500">
+    <p class="small">Bassängens kapacitet beräknas med formeln V = π · r² · h. 1 m³ = 1 000 liter. Vattenmängden från början begränsas till bassängens kapacitet.</p>
+    <button id="update" type="button">Uppdatera bassängen</button>
+  </div>
+
+  <div class="panel">
+    <h2>2. Följ tiden</h2>
+    <label for="time">Tid som har gått: <span id="timeLabel">4</span> timmar</label>
+    <input id="time" type="range" min="0" max="24" step="0.5" value="4">
+    <div class="row">
+      <div><label for="timeNumber">Tid (timmar)</label><input id="timeNumber" type="number" min="0" step="0.5" value="4"></div>
+      <button id="play" type="button">▶ Spela</button>
+      <button id="pause" class="secondary" type="button">Pausa</button>
+      <button id="reset" class="secondary" type="button">Återställ tiden</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="panel">
+    <h2>Så mycket vatten finns kvar</h2>
+    <canvas id="tank" width="520" height="390" aria-label="Ritning av en cylindrisk vattenbassäng med vattennivå"></canvas>
+    <p class="stat">Efter <span id="elapsed">4</span> timmar finns <span id="remaining" class="highlight">4 000</span> liter kvar.</p>
+    <p class="stat">Bassängen är fylld till <span id="percent">33,3</span> %.</p>
+    <p id="emptyText" class="small"></p>
+    <p class="small">Modellen antar att vattnet rinner ut med samma hastighet hela tiden, tills bassängen är tom.</p>
+  </div>
+</section>
+</div>
+
+<section class="question">
+<h2>Uppgift 1 – Hur länge räcker vattnet?</h2>
+<p>Räkna ut hur många timmar det tar innan bassängen är tom. Skriv ditt svar med en decimal.</p>
+<label for="answerEmpty">Ditt svar (timmar)</label><input id="answerEmpty" type="number" min="0" step="0.1">
+<button type="button" id="checkEmpty">Kontrollera</button>
+<div id="feedbackEmpty" class="feedback"></div>
+</section>
+
+<section class="question">
+<h2>Uppgift 2 – Vatten kvar efter en viss tid</h2>
+<p>Hur många liter finns kvar efter den tid som är vald i reglaget? Avrunda till hela liter.</p>
+<label for="answerRemaining">Ditt svar (liter)</label><input id="answerRemaining" type="number" min="0" step="1">
+<button type="button" id="checkRemaining">Kontrollera</button>
+<div id="feedbackRemaining" class="feedback"></div>
+</section>
+
+<section class="question">
+<h2>⭐ Fördjupning – Vatten fylls på samtidigt</h2>
+<p>Nu pumpas vatten in samtidigt som vatten rinner ut. Ändra mängden vatten som fylls på per timme. Jämför inflödet med utflödet.</p>
+<div class="row">
+  <div><label for="inflow">Vatten som fylls på (liter per timme)</label><input id="inflow" type="number" min="0" step="10" value="200"></div>
+  <button id="applyFlow" type="button">Beräkna med påfyllning</button>
+</div>
+<p id="flowExplanation"></p>
+<p>Om det till exempel rinner ut 500 liter per timme och fylls på 200 liter per timme, minskar vattenmängden med 300 liter per timme.</p>
+<h3>Fördjupningsfrågor</h3>
+<ol>
+<li>Hur många liter finns kvar efter 4 timmar när påfyllningen är 200 liter per timme?</li>
+<li>Hur lång tid tar det innan bassängen är tom med den påfyllningen?</li>
+<li>Vad händer om inflödet är lika stort som utflödet? Vad händer om inflödet är större?</li>
+</ol>
+<label for="deepAnswer">Skriv din förklaring</label>
+<textarea id="deepAnswer" rows="4" style="width:100%;padding:9px;font:inherit;border:1px solid #9eabb5;border-radius:6px" placeholder="Beskriv hur du tänker och vilka beräkningar du gör."></textarea>
+<button id="showHint" class="secondary" type="button">Visa ledtråd</button>
+<p id="hint" hidden>Förändring per timme = inflöde − utflöde. Vattenmängd = startmängd + förändring per timme · tid. Mängden kan aldrig bli mindre än 0 liter eller större än bassängens kapacitet.</p>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const canvas = $("tank"), ctx = canvas.getContext("2d");
+let playing = false, lastFrame = 0, currentInflow = 200;
+
+function number(id, fallback=0) {
+  const n = Number($(id).value);
+  return Number.isFinite(n) ? n : fallback;
+}
+function getModel() {
+  const r = Math.max(0.1, number("radius", 2));
+  const h = Math.max(0.1, number("height", 1.5));
+  const capacity = Math.PI * r * r * h * 1000;
+  const initial = Math.min(capacity, Math.max(0, number("initial", 0)));
+  const outflow = Math.max(0, number("outflow", 0));
+  const inflow = Math.max(0, currentInflow);
+  return {r,h,capacity,initial,outflow,inflow};
+}
+function litersAt(t, m=getModel()) {
+  return Math.max(0, Math.min(m.capacity, m.initial + (m.inflow - m.outflow) * Math.max(0,t)));
+}
+function emptyTime(m=getModel()) {
+  const net = m.outflow - m.inflow;
+  if (m.initial <= 0) return 0;
+  if (net <= 0) return Infinity;
+  return m.initial / net;
+}
+function fmt(n, decimals=0) {
+  return n.toLocaleString("sv-SE", {maximumFractionDigits:decimals, minimumFractionDigits:decimals});
+}
+function drawTank(level, m) {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#eef4f7"; ctx.fillRect(0,0,canvas.width,canvas.height);
+  const cx=260, top=65, maxW=270, maxH=245;
+  const scale=Math.min(maxW/(2*m.r), maxH/m.h);
+  const rx=m.r*scale, hh=m.h*scale, bottom=top+hh, ey=Math.max(10,Math.min(26,rx*0.18));
+  const waterH=hh*(level/Math.max(1,m.capacity));
+  const waterY=bottom-waterH;
+  // Vattnet klipps till bassängens raka sidor.
+  ctx.save();
+  ctx.beginPath();ctx.rect(cx-rx,top,2*rx,hh);ctx.clip();
+  ctx.fillStyle="#4da6ff";ctx.fillRect(cx-rx,waterY,2*rx,waterH+ey);
+  if(level>0){ctx.beginPath();ctx.ellipse(cx,waterY,rx,ey,0,0,Math.PI*2);ctx.fillStyle="#2589df";ctx.fill();}
+  ctx.restore();
+  // Övre kant och sidor
+  ctx.strokeStyle="#174c75";ctx.lineWidth=3;
+  ctx.beginPath();ctx.ellipse(cx,top,rx,ey,0,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(cx-rx,top);ctx.lineTo(cx-rx,bottom);ctx.moveTo(cx+rx,top);ctx.lineTo(cx+rx,bottom);ctx.stroke();
+  // Bottenellips
+  ctx.beginPath();ctx.setLineDash([6,4]);ctx.ellipse(cx,bottom,rx,ey,0,Math.PI,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();ctx.ellipse(cx,bottom,rx,ey,0,0,Math.PI*2);ctx.stroke();
+ // if(level>0){ctx.save();ctx.beginPath();ctx.ellipse(cx,bottom,rx,ey,0,0,Math.PI);ctx.strokeStyle="#2589df";ctx.lineWidth=4;ctx.stroke();ctx.restore();}
+  
+  // Färga främre halvan av bottenellipsen blå
+// när det finns vatten i bassängen.
+if (level > 0) {
+    ctx.save();
+
+    ctx.beginPath();
+    ctx.ellipse(
+        cx,
+        bottom,
+        rx,
+        ey,
+        0,
+        0,
+        Math.PI*2
+    );
+
+    ctx.closePath();
+    ctx.fillStyle = "#4da6ff";
+    ctx.fill();
+
+    ctx.restore();
+}
+  
+  ctx.fillStyle="#174c75";ctx.font="bold 16px Arial";ctx.textAlign="center";
+  ctx.fillText(fmt(level)+" liter",cx,30);
+  ctx.font="14px Arial";ctx.fillText("Kapacitet: "+fmt(m.capacity)+" liter",cx,canvas.height-18);
+  ctx.textAlign="left";
+}
+function update() {
+  const m=getModel();
+  const t=Math.max(0,number("time",0));
+  const water=litersAt(t,m);
+  $("timeLabel").textContent=fmt(t,1);$("timeNumber").value=t;
+  $("elapsed").textContent=fmt(t,1);$("remaining").textContent=fmt(water);
+  $("percent").textContent=fmt(water/m.capacity*100,1);
+  drawTank(water,m);
+  const et=emptyTime(m);
+  if(m.initial<=0) $("emptyText").textContent="Bassängen är redan tom.";
+  else if(et===Infinity) $("emptyText").textContent="Med nuvarande flöden blir bassängen inte tom: inflödet är minst lika stort som utflödet.";
+  else $("emptyText").textContent="Med nuvarande flöden blir bassängen tom efter "+fmt(et,1)+" timmar.";
+  updateFlowExplanation(m);
+}
+function updateFlowExplanation(m=getModel()) {
+  const net=m.inflow-m.outflow;
+  let msg;
+  if(net<0) msg="Vattenmängden minskar med "+fmt(-net)+" liter per timme.";
+  else if(net>0) msg="Vattenmängden ökar med "+fmt(net)+" liter per timme, tills bassängen är full.";
+  else msg="Inflöde och utflöde är lika stora. Vattenmängden är oförändrad.";
+  $("flowExplanation").textContent=msg;
+}
+function setTime(v) {
+  const t=Math.max(0,Number(v)||0);
+  $("time").value=Math.min(Number($("time").max),t);
+  $("timeNumber").value=t;
+  $("timeLabel").textContent=fmt(t,1);
+  update();
+}
+$("time").addEventListener("input", e=>{ $("timeNumber").value=e.target.value; update(); });
+$("timeNumber").addEventListener("change", e=>{ setTime(e.target.value); });
+$("update").addEventListener("click", update);
+$("applyFlow").addEventListener("click", ()=>{currentInflow=Math.max(0,number("inflow",0));update();});
+["radius","height","initial","outflow"].forEach(id=>$(id).addEventListener("change",update));
+$("checkEmpty").addEventListener("click",()=>{
+ const m=getModel(), expected=emptyTime(m), ans=number("answerEmpty",NaN), out=$("feedbackEmpty");
+ if(!Number.isFinite(ans)){out.textContent="Skriv ett svar först.";out.className="feedback wrong";return;}
+ if(expected===Infinity){out.textContent="Med dessa flöden blir bassängen inte tom.";out.className="feedback";}
+ else if(Math.abs(ans-expected)<=0.11){out.textContent="✓ Rätt! Bassängen blir tom efter ungefär "+fmt(expected,1)+" timmar.";out.className="feedback correct";}
+ else {out.textContent="Inte riktigt. Dela startmängden med hur många liter som försvinner per timme.";out.className="feedback wrong";}
+});
+$("checkRemaining").addEventListener("click",()=>{
+ const expected=Math.round(litersAt(number("time",0))), ans=number("answerRemaining",NaN), out=$("feedbackRemaining");
+ if(!Number.isFinite(ans)){out.textContent="Skriv ett svar först.";out.className="feedback wrong";}
+ else if(Math.abs(ans-expected)<=1){out.textContent="✓ Rätt! Det finns "+fmt(expected)+" liter kvar.";out.className="feedback correct";}
+ else {out.textContent="Inte riktigt. Börja med startmängden och dra bort nettomängden som runnit ut.";out.className="feedback wrong";}
+});
+$("showHint").addEventListener("click",()=>{$("hint").hidden=!$("hint").hidden;$("showHint").textContent=$("hint").hidden?"Visa ledtråd":"Dölj ledtråd";});
+$("reset").addEventListener("click",()=>{playing=false;setTime(0);});
+$("play").addEventListener("click",()=>{playing=true;lastFrame=0;});
+$("pause").addEventListener("click",()=>{playing=false;});
+function animate(ts){
+ if(playing){
+  if(lastFrame){let t=number("time",0)+(ts-lastFrame)/1000*0.25;const max=Number($("time").max);
+   if(t>=max){t=max;playing=false;}setTime(t);}
+  lastFrame=ts;
+ }
+ requestAnimationFrame(animate);
+}
+update();requestAnimationFrame(animate);
+</script>
+</body>
+</html>
