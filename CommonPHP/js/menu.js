@@ -34,9 +34,7 @@ const menus=[
            {
         name: "Fylld cylinder",
         link: "cylinderFylld.html" },
-         {
-        name: "Trigonometri",
-        link: "sinCos.html" },
+      
          {
         name: "Behållare",
         link: "behållareFylld.html" },
